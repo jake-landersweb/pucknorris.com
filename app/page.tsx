@@ -1,7 +1,6 @@
 import BoundsWrapper from "../components/boundsWrapper"
 import PageHeader from "../components/pageHeader"
 import SeasonNodeCell from "../components/seasonNode"
-import SeasonNodeCellSmall from "../components/seasonNodeSmall"
 import getSchedule from "../lib/apiRoutes/getSchedule"
 
 const Index = async () => {
