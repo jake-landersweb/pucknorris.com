@@ -8,12 +8,12 @@ const Footer = () => {
         <footer className="p-4 bg-bg-700 shadow md:px-6 md:py-8">
             <div className="sm:flex sm:items-center sm:justify-between">
                 <Link props={{
-                    href: "https://crosschecksports.com",
+                    href: "https://sapphirenw.com",
                     child: <Image props={{
-                        src: "/svg/xcheck_blue_text_light.svg",
-                        alt: "Crosscheck Sports Logo",
+                        src: "/svg/sapphire_text_light.svg",
+                        alt: "Sapphire NW Logo",
                         divClass: undefined,
-                        imgClass: "mr-3 h-8"
+                        imgClass: "mr-3 h-10"
                     }} />,
                     isExternal: true,
                     className: undefined

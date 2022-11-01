@@ -8,7 +8,7 @@ const PageHeader = ({ children }: { children: React.ReactNode }) => {
             divClass: undefined,
             imgClass: "h-[200px] md:h-[300px]"
         }} />
-        <div className="space-y-2 pb-4 text-center">
+        <div className="space-y-2 pb-4 text-center px-2 md:px-4">
             {children}
         </div>
     </div>

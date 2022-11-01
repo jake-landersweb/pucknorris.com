@@ -6,14 +6,15 @@ import eventLocation from "../lib/functions/eventLocation";
 import eventMonthName from "../lib/functions/eventMonthName";
 import eventTime from "../lib/functions/eventTime";
 import { MdOutlineSportsScore } from 'react-icons/md'
+import eventIsHome from "../lib/functions/eventIsHome";
 
 const EventCell = ({ event }: { event: Event }) => {
     const largeTitle = () => {
         if (event.eventType == 1) {
             return <div className="text-[44px] md:text-6xl font-light grid grid-cols-1 place-items-center">
-                <h4 className={`${!eventIsPrevious(event) ? "font-bold" : "text-txt-400"} text-center`}>{event.homeTeam.title}</h4>
+                <h4 className={`${eventIsHome(event) ? "font-bold" : "text-txt-400"} text-center`}>{event.homeTeam.title}</h4>
                 <p className='text-2xl font-light text-txt-500 mx-auto'>vs</p>
-                <h4 className={`${!eventIsPrevious(event) ? "text-txt-400" : "font-bold"} text-center`}>{event.awayTeam.title}</h4>
+                <h4 className={`${eventIsHome(event) ? "text-txt-400" : "font-bold"} text-center`}>{event.awayTeam.title}</h4>
                 {/* {eventIsPrevious(event) ? getScore() : <></>} */}
             </div>
         } else {

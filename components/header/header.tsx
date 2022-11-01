@@ -30,11 +30,11 @@ const Header = () => {
         setIsOpen(false);
     };
 
-    const headerItem = (title: string, href: string) => {
+    const headerItem = (title: string, href: string, isExternal: boolean = false) => {
         return <Link props={{
             href: href,
             child: <>{title}</>,
-            isExternal: false,
+            isExternal: isExternal,
             className: `${scrollY > 50 ? "hover:bg-bg-500" : "hover:bg-bg-700"} hover:bg-bg-500 transition-all px-4 py-2 rounded-md text-txt`
         }} />
     }
@@ -44,7 +44,7 @@ const Header = () => {
             {headerItem("Schedule", "/schedule")}
             {headerItem("Merch", "/merch")}
             {headerItem("Gallery", "/gallery")}
-            {headerItem("About", "/about")}
+            {headerItem("Login", "https://teams.crosschecksports.com", true)}
         </div>
     }
 
@@ -133,12 +133,12 @@ const Header = () => {
                     </div>
                     <div>
                         <HeaderItem props={{
-                            route: '/about',
-                            title: 'About',
+                            route: '/login',
+                            title: 'Login',
                             onTap: () => closeMenu(),
                             isCollapsed: false,
                             className: "dark:bg-bg-500 py-2 px-4 cursor-pointer rounded-md w-full",
-                            isExternal: false,
+                            isExternal: true,
                         }} />
                     </div>
                 </div>
