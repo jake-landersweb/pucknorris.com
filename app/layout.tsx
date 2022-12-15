@@ -7,7 +7,7 @@ const Root = ({ children }: { children: React.ReactNode }) => {
     return (
         <html style={{ "scrollPaddingTop": "60px" }} lang="en" className="scroll-smooth text-txt bg-bg">
             <head>
-                <title>Puck Norris - Hockey Team</title>
+                <title>Puck Norris Hockey Club - Blood Sweat and Beers</title>
                 <meta charSet="UTF-8" />
                 <meta
                     name="viewport"
@@ -20,7 +20,7 @@ const Root = ({ children }: { children: React.ReactNode }) => {
                 <meta name="author" content="SapphireNW" />
                 <meta
                     name="keywords"
-                    content="hockey,pnw,pacific,northwest,portland,oregon,ice hockey,mens league"
+                    content="hockey,pnw,pacific,northwest,portland,oregon,ice hockey,mens league, hockey merchandise"
                     id="keywords"
                 />
                 <link
