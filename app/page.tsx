@@ -1,10 +1,14 @@
 import BoundsWrapper from "../components/boundsWrapper"
+import Image from "../components/image"
+import Link from "../components/link"
 import PageHeader from "../components/pageHeader"
 import SeasonNodeCell from "../components/seasonNode"
 import getSchedule from "../lib/apiRoutes/getSchedule"
+import shopifyClient from "../lib/apiRoutes/shopifyClient"
 
 const Index = async () => {
     const schedule = await getSchedule()
+    const merchResponse = await shopifyClient.product.fetchAll();
 
     const upcomingCells = () => {
         const items = []
@@ -24,12 +28,43 @@ const Index = async () => {
         return items
     }
 
+    const merch = () => {
+        const cells = []
+        for (var i = 0; i < merchResponse.length; i++) {
+            if (merchResponse[i].title.toLowerCase().includes("sweatshirt") || merchResponse[i].title.toLowerCase().includes("tshirt")) {
+                cells.push(
+                    <Link props={{
+                        href: merchResponse[i].onlineStoreUrl ?? `https://shop.pucknorris.com/products/${merchResponse[i].title.split(" ").join("-").toLowerCase()}`,
+                        child: <>
+                            <Image props={{
+                                src: merchResponse[i].images[0].src,
+                                alt: "Product Image",
+                                divClass: "overflow-hidden rounded-lg grid place-items-center",
+                                imgClass: "md:group-hover:scale-105 transition-all md:max-w-[150px] max-w-[100px]"
+                            }} />
+                        </>,
+                        isExternal: true,
+                        className: "group"
+                    }} />
+                )
+            }
+        }
+        return cells
+    }
+
     return <BoundsWrapper>
         <div className="flex flex-col items-center">
             <PageHeader>
                 <div className="space-y-2">
                     <h2 className="text-4xl lg:text-6xl font-medium text-center lg:text-left pt-4">Puck Norris Hockey Club</h2>
+                    <h4 className="text-main text-2xl font-gains">Blood, Sweat, and Beers</h4>
                     <p className="max-w-2xl text-gray-500 text-center">The most badass men's league hockey team in the pacific northwest! We like to play hockey, have fun, and most importantly drink good beer together. This site is powered by Crosscheck Sports, which you can learn more about <a target="_blank" rel="noopener noreferrer" href="https://crosschecksports.com" className="underline md:hover:no-underline">here.</a></p>
+                    <h3 className="text-xl font-bold text-gray-400">Featured Merchandise</h3>
+                    <div className="grid place-items-center">
+                        <div className="flex space-x-4 items-center">
+                            {merch()}
+                        </div>
+                    </div>
                 </div>
             </PageHeader>
             <BoundsWrapper>

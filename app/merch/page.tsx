@@ -12,7 +12,7 @@ const Merch = async () => {
         <div className="">
             <PageHeader>
                 <p className="max-w-2xl text-gray-500 text-center">High quality merchandise to rep the most badass hockey team in the pacific northwest! Visit the shopify store for a more comprehensive experience.</p>
-                <div className="">
+                <div className="pt-4">
                     <Link props={{
                         href: 'https://shop.pucknorris.com',
                         child: <>Shopify Store</>,

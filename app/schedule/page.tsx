@@ -9,9 +9,10 @@ const Schedule = async () => {
     const schedule = await getScheduleFull()
 
     const seasonNodes = () => {
+        console.log(schedule)
         const items = []
-        for (var i = 0; i < schedule['body'].length; i++) {
-            items.push(<div id={schedule['body'][i].title}><SeasonNodeCellFull node={schedule['body'][i]} /></div>)
+        for (var i = 0; i < schedule.body.length; i++) {
+            items.push(<div id={schedule.body[i].title}><SeasonNodeCellFull node={schedule['body'][i]} /></div>)
         }
         return items
     }
@@ -19,16 +20,7 @@ const Schedule = async () => {
     const header = () => {
         const items = []
         for (var i = 0; i < schedule['body'].length; i++) {
-            const cells = []
-            if (schedule['body'][i]['nextEvents'] != undefined) {
-                cells.push(<p className="text-xl text-txt-300 md:hover:text-txt-600 transition-all underline md:hover:no-underline"><a href={`#${slufigy(schedule['body'][i].title)}-next`}>Next Events</a></p>)
-            }
-            if (schedule['body'][i]['previousEvents'] != undefined) {
-                cells.push(<p className="text-xl text-txt-300 md:hover:text-txt-600 transition-all underline md:hover:no-underline"><a href={`#${slufigy(schedule['body'][i].title)}-past`}>Previous Events</a></p>)
-            }
-            if (cells.length > 0) {
-                items.push(<div><h3 className="text-2xl md:text-3xl font-medium md:hover:text-gray-400 transition-all"><a href={`#${slufigy(schedule['body'][i].title)}`}>{schedule['body'][i].title}</a></h3><div className="space-y-2">{cells}</div></div>)
-            }
+            items.push(<div><h3 className="text-2xl md:text-3xl font-medium text-main transition-all hover:opacity-75 hover:underline"><a href={`#${slufigy(schedule['body'][i].title)}`}>- {schedule['body'][i].title}</a></h3></div>)
         }
         return items
     }
@@ -41,11 +33,13 @@ const Schedule = async () => {
         <BoundsWrapper>
             <div className="space-y-4">
                 <div className="grid place-items-center">
-                    <div className="text-center">
+                    <div className="text-center space-y-2">
                         {header()}
                     </div>
                 </div>
-                {seasonNodes()}
+                <div className="grid lg:grid-cols-2 gap-4">
+                    {seasonNodes()}
+                </div>
             </div>
         </BoundsWrapper>
     </div>
