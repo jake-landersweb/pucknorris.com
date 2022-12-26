@@ -17,7 +17,7 @@ const ProductCell = ({ product }: { product: ShopifyBuy.Product }) => {
             }} />
             <div className="px-5 pb-5 pt-2 mw-auto border-t border-t-bg-500 bg-bg-700 rounded-b-md">
                 <h5 className="text-2xl font-semibold tracking-tight text-white md:group-hover:opacity-75 transition-opacity">{product.title}</h5>
-                <p className="text-gray-400 md:group-hover:opacity-75 transition-opacity pb-2">{product.description}</p>
+                <p className="text-gray-400 md:group-hover:opacity-75 transition-opacity pb-2">{product.description.length > 100 ? product.description.substring(0, 100) + "..." : product.description}</p>
                 <div className="flex justify-between items-center md:group-hover:opacity-75 transition-opacity">
                     <p className="text-3xl font-bold text-white">${(product.variants[0].price as any)['amount']}0</p>
                     <p className="text-main">
