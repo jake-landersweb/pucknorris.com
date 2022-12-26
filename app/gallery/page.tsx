@@ -8,11 +8,12 @@ const Gallery = async () => {
     const getImages = () => {
         const imgs = []
 
-        for (var i = 0; i < imageData['body'].length; i++) {
+        for (var i = 0; i < imageData.items.length; i++) {
             imgs.push(
-                // <PhotoView src={imageData['body'][i]}>
-                <img src={imageData['body'][i]} alt="" className="hover:cursor-pointer border border-bg-500 rounded-md" />
-                // {/* </PhotoView> */}
+                <div className="">
+                    <img src={`http://pocketbase.sapphirenw.com/api/files/xc_images/${imageData.items[i].id}/${imageData.items[i].image}`} alt="" className="hover:cursor-pointer border border-bg-500 rounded-md" />
+                    <p className="text-gray-500 text-center">{imageData.items[i].description}</p>
+                </div>
             )
         }
         return imgs
