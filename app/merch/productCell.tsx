@@ -14,7 +14,7 @@ const ProductCell = ({ product }: { product: ShopifyBuy.Product }) => {
                     src: product.images[0].src,
                     alt: "Product Image",
                     divClass: "overflow-hidden rounded-lg grid place-items-center",
-                    imgClass: "md:group-hover:scale-105 transition-all max-w-[300px]"
+                    imgClass: "md:group-hover:scale-105 transition-all max-w-[200px]"
                 }} />
             </div>
             <div className="">

@@ -1,7 +1,7 @@
 import Image from "./image"
 
-const PageHeader = ({ children }: { children: React.ReactNode }) => {
-    return <div className="flex flex-col items-center pb-12 space-y-4">
+const PageHeader = ({ children, className }: { children: React.ReactNode, className?: string }) => {
+    return <div className={`flex flex-col items-center pb-12 space-y-4 ${className}`}>
         <Image props={{
             src: "/images/pucknorris.png",
             alt: "Puck Norris Logo",

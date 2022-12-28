@@ -15,7 +15,7 @@ const MerchView = ({ products }: { products: ShopifyBuy.Product[] }) => {
         switch (products.length) {
             case 1: return "grid-cols-1"
             case 2: return "grid-cols-1 md:grid-cols-2"
-            default: return "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+            default: return "grid-cols-1 md:grid-cols-2 lg:grid-cols-4"
         }
     }
 
