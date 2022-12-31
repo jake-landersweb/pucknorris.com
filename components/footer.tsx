@@ -7,7 +7,7 @@ import NextLink from "next/link"
 const Footer = () => {
 
     return <footer className="bg-bg-700">
-        <div className="md:px-4 py-8">
+        <div className="py-8">
             <BoundsWrapper>
                 <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-8 grid place-items-center md:block">
