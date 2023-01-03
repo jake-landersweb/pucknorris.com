@@ -25,7 +25,7 @@ const EventCell = ({ event }: { event: Event }) => {
     const detailCell = (label: string, val: string) => {
         return <div className="pt-4 space-y-2">
             <p className="text-txt-300 text-xl font-bold">{label.toUpperCase()}</p>
-            <p className="text-gray-500 text-lg">{val}</p>
+            <p className="text-gray-500 text-lg break-words">{val}</p>
         </div>
     }
 

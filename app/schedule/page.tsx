@@ -31,15 +31,15 @@ const Schedule = async () => {
 
     return <div className="">
         <PageHeader className="pb-4">
-            <p className="max-w-2xl text-gray-500 text-center">Puck Norris has a few different active seasons at any given time. This schedule page is meant to giev a nice comprehensive overview of the schedule of the currently active seasons.</p>
+            <p className="max-w-2xl text-gray-500 text-center text-xl">Puck Norris has multiple active seasons at any given time. This schedule page gives a comprehensive schedule of the currently active seasons.</p>
         </PageHeader>
         <BoundsWrapper>
             <div className="space-y-4">
-                <div className={`grid place-items-center pb-4`}>
+                {/* <div className={`grid place-items-center pb-4`}>
                     <div className="md:flex md:items-center md:space-x-10 space-y-4 md:space-y-0 grid place-items-center">
                         {header()}
                     </div>
-                </div>
+                </div> */}
                 <div className="grid lg:grid-cols-2 gap-4">
                     {seasonNodes()}
                 </div>

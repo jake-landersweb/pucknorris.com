@@ -39,7 +39,7 @@ const SeasonNodeCellFull = ({ node }: { node: SeasonNodeFull }) => {
     }
 
     return <div className="space-y-4">
-        <h2 id={slufigy(node.title)} className="text-4xl md:text-5xl">{node.title}</h2>
+        <h2 id={slufigy(node.title)} className="text-2xl md:text-4xl">{node.title}</h2>
         <div className="space-y-2">
             {schedule(false)}
             {schedule(true)}

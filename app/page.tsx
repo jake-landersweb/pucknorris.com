@@ -56,9 +56,9 @@ const Index = async () => {
         <div className="flex flex-col items-center">
             <PageHeader>
                 <div className="space-y-2">
-                    <h2 className="text-4xl lg:text-6xl font-medium text-center lg:text-left pt-4">Puck Norris Hockey Club</h2>
-                    <h4 className="text-main text-2xl font-gains">Blood, Sweat, and Beers</h4>
-                    <p className="max-w-2xl text-gray-500 text-center">The most badass men's league hockey team in the pacific northwest! We like to play hockey, have fun, and most importantly drink good beer together. This site is powered by Crosscheck Sports, which you can learn more about <a target="_blank" rel="noopener noreferrer" href="https://crosschecksports.com" className="underline md:hover:no-underline">here.</a></p>
+                    <h2 className="text-4xl lg:text-6xl font-medium text-center pt-4 font-gains tracking-wide">Puck Norris Hockey Club</h2>
+                    <h4 className="text-main text-3xl font-gains">Blood, Sweat, &#38; Beers!</h4>
+                    <p className="max-w-2xl text-gray-500 text-center md:text-xl">The most badass men's league hockey team in the PNW! We play hockey, have fun, and most importantly, drink good beer.</p>
                     <h3 className="text-xl font-bold text-gray-400">Featured Merchandise</h3>
                     <div className="grid place-items-center">
                         <div className="flex space-x-4 items-center">

@@ -8,7 +8,7 @@ import eventMonthName from "../lib/functions/eventMonthName"
 const EventCellCompact = ({ event }: { event: Event }) => {
     const title = () => {
         if (event.eventType == 1) {
-            return <div className="text-2xl md:text-4xl font-light flex space-x-4 items-center">
+            return <div className="text-xl md:text-3xl font-light flex space-x-4 items-center">
                 <h4 className={`${eventIsHome(event) ? "font-bold" : "text-txt-400"} break-words text-center`}>{event.homeTeam.title}</h4>
                 <p className='text-2xl font-light text-txt-500 mx-auto'>vs</p>
                 <h4 className={`${eventIsHome(event) ? "text-txt-400" : "font-bold"} break-words text-center`}>{event.awayTeam.title}</h4>
@@ -31,14 +31,16 @@ const EventCellCompact = ({ event }: { event: Event }) => {
         </div>
     }
 
-    return <div className="flex space-x-4 items-center px-4 py-2">
+    return <div className="flex space-x-4 items-center px-4 py-2 flex-grow">
         <div className="grid content-center justify-center place-items-center">
-            <p className="text-4xl md:text-6xl font-bold">{eventDayNumber(event)}</p>
+            <p className="text-3xl md:text-4xl font-bold">{eventDayNumber(event)}</p>
             <p className="text-main text-xl md:text-2xl">{eventMonthName(event).substring(0, 3)}</p>
         </div>
-        <div className="space-y-2">
-            {eventIsPrevious(event) ? <div className="grid place-items-center">{score()}</div> : null}
-            {title()}
+        <div className="flex flex-row w-full">
+            <div className="space-y-2 mx-auto">
+                {eventIsPrevious(event) ? <div className="grid place-items-center">{score()}</div> : null}
+                {title()}
+            </div>
         </div>
     </div>
 }

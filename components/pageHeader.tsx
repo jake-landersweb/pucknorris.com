@@ -5,7 +5,7 @@ const PageHeader = ({ children, className }: { children: React.ReactNode, classN
         <Image props={{
             src: "/images/pucknorris.png",
             alt: "Puck Norris Logo",
-            divClass: undefined,
+            divClass: "md:pr-[50px] pr-[20px]",
             imgClass: "h-[200px] md:h-[300px]"
         }} />
         <div className="space-y-2 pb-4 text-center px-2 md:px-4">
