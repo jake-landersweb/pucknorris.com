@@ -133,7 +133,7 @@ const Header = () => {
                     </div>
                     <div>
                         <HeaderItem props={{
-                            route: '/login',
+                            route: 'https://teams.crosschecksports.com',
                             title: 'Login',
                             onTap: () => closeMenu(),
                             isCollapsed: false,
