@@ -17,6 +17,16 @@ const nextConfig = {
         },
       ],
     },
+    {
+      // Create glob to target specific pages you want
+      source: '/gallery',
+      headers: [
+        {
+          key: 'Cache-Control',
+          value: 'no-store',
+        },
+      ],
+    },
   ],
 }
 

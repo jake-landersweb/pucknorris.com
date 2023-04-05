@@ -55,6 +55,7 @@ const Index = async () => {
     return <BoundsWrapper>
         <div className="flex flex-col items-center">
             <PageHeader>
+                
                 <div className="space-y-2">
                     <h2 className="text-4xl lg:text-6xl font-medium text-center pt-4 font-gains tracking-wide">Puck Norris Hockey Club</h2>
                     <h4 className="text-main text-3xl font-gains">Blood, Sweat, &#38; Beers!</h4>
