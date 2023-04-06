@@ -41,6 +41,7 @@ const Header = () => {
 
     const menu = (className: string) => {
         return <div className={className}>
+            {headerItem("ChuckBot", "/chat")}
             {headerItem("Schedule", "/schedule")}
             {headerItem("Merch", "/merch")}
             {headerItem("Gallery", "/gallery")}
@@ -51,7 +52,7 @@ const Header = () => {
 
     return (
         <div className={`${scrollY > 50 ? "bg-bg-700 dark:bg-bg-dark-700 shadow-md" : "bg-bg dark:bg-bg-dark bg-opacity-50 backdrop-blur-sm"} h-[60px] items-center w-screen grid place-items-center transition-all duration-300 fixed top-0 left-0`}>
-            <div className="flex items-center justify-between max-w-[2000px] w-full px-2 lg:px-20 md:px-10">
+            <div className="flex items-center justify-between max-w-[2000px] w-full px-2 lg:px-10">
                 <div className="flex space-x-4">
                     <div className="">
                         <NextLink href="/" onClick={(e) => closeMenu()}>
@@ -71,10 +72,10 @@ const Header = () => {
                     </div>
                 </div>
                 {/* The full sized menu */}
-                {menu("hidden md:flex md:space-x-8 md:items-center")}
+                {menu("hidden lg:flex lg:space-x-8 lg:items-center")}
                 {/* Mobile menu */}
                 {isOpen ? (
-                    <button onClick={handleClick} className={`md:hidden text-txt-400 w-10 h-10 focus:outline-none fixed right-2 z-50`}>
+                    <button onClick={handleClick} className={`lg:hidden text-txt-400 w-10 h-10 focus:outline-none fixed right-2 z-50`}>
                         <span className="sr-only">Open main menu</span>
                         <div
                             className="block w-5 absolute left-1/2 top-1/2   transform  -translate-x-1/2 -translate-y-1/2">
@@ -86,7 +87,7 @@ const Header = () => {
                         </div>
                     </button>
                 ) : (
-                    <button onClick={handleClick} className={`md:hidden text-txt-400 w-10 h-10 relative focus:outline-none z-50`}>
+                    <button onClick={handleClick} className={`lg:hidden text-txt-400 w-10 h-10 relative focus:outline-none z-50`}>
                         <span className="sr-only">Open main menu</span>
                         <div
                             className="block w-5 absolute left-1/2 top-1/2   transform  -translate-x-1/2 -translate-y-1/2">
@@ -101,6 +102,16 @@ const Header = () => {
                 <div
                     className={`top-0 right-0 w-[75vw] py-[75px] pb-4 space-y-2 px-4 bg-bg-700 fixed h-screen z-40 ease-in-out duration-300 border-l border-bg-500 overflow-auto ${isOpen ? "translate-x-0 " : "translate-x-full"}`}>
                     <h3 className='text-2xl font-bold'>Puck Norris</h3>
+                    <div>
+                        <HeaderItem props={{
+                            route: '/chat',
+                            title: 'ChuckBot',
+                            onTap: () => closeMenu(),
+                            isCollapsed: false,
+                            className: "dark:bg-bg-500 py-2 px-4 cursor-pointer rounded-md w-full",
+                            isExternal: false,
+                        }} />
+                    </div>
                     <div>
                         <HeaderItem props={{
                             route: '/schedule',

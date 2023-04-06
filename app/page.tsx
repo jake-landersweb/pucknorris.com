@@ -55,9 +55,19 @@ const Index = async () => {
     return <BoundsWrapper>
         <div className="flex flex-col items-center">
             <PageHeader>
-                
+
                 <div className="space-y-2">
                     <h2 className="text-4xl lg:text-6xl font-medium text-center pt-4 font-gains tracking-wide">Puck Norris Hockey Club</h2>
+                    <Link props={{
+                        href: "/chat",
+                        child: <>
+                            <div className="bg-main rounded-md px-4 py-2 md:hover:opacity-50 transition-opacity">
+                                <p>Try out ChuckBot! Hockey player Puck Norris Chat Bot</p>
+                            </div>
+                        </>,
+                        isExternal: undefined,
+                        className: undefined
+                    }} />
                     <h4 className="text-main text-3xl font-gains">Blood, Sweat, &#38; Beers!</h4>
                     <p className="max-w-2xl text-gray-500 text-center md:text-xl">The most badass men's league hockey team in the PNW! We play hockey, have fun, and most importantly, drink good beer.</p>
                     <h3 className="text-xl font-bold text-gray-400">Featured Merchandise</h3>
