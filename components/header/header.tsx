@@ -51,7 +51,7 @@ const Header = () => {
 
 
     return (
-        <div className={`${scrollY > 50 ? "bg-bg-700 dark:bg-bg-dark-700 shadow-md" : "bg-bg dark:bg-bg-dark bg-opacity-50 backdrop-blur-sm"} h-[60px] items-center w-screen grid place-items-center transition-all duration-300 fixed top-0 left-0`}>
+        <div className={`${scrollY > 50 ? "bg-bg-700 dark:bg-bg-dark-700 shadow-md" : "bg-bg dark:bg-bg-dark bg-opacity-50 backdrop-blur-sm"} h-[60px] items-center w-screen grid place-items-center transition-all duration-300`}>
             <div className="flex items-center justify-between max-w-[2000px] w-full px-2 lg:px-10">
                 <div className="flex space-x-4">
                     <div className="">

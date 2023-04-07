@@ -46,7 +46,7 @@ const Root = ({ children }: { children: React.ReactNode }) => {
             </head>
             <body>
                 <div className="">
-                    <div className="fixed top-0 z-50">
+                    <div className="fixed top-0 z-50 left-0">
                         <Header />
                     </div>
                     <div className="my-[80px]">

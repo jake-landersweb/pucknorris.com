@@ -55,7 +55,7 @@ const Field = ({ props }: { props: FieldArgs }) => {
             <textarea className={`${showMessage() ? "focus:border-red-400" : "focus:border-main"} resize-none py-2 px-4 w-full bg-bg-700 rounded-md border-transparent border-2 focus:outline-none overflow-y-scroll`} onChange={fieldChanged} placeholder={props.placeholder} value={props.value} rows={props.rows ?? 8} cols={props.columns ?? 50}></textarea>
         </div>
     } else {
-        return <input className={`${showMessage() ? "focus:border-red-400" : "focus:border-main"} flex-grow py-2 px-4 bg-bg-700 rounded-md border-transparent border-2 focus:outline-none`} placeholder={props.placeholder} type={props.inputType} value={props.value} onChange={fieldChanged} onKeyDown={props.onKeyDown} />
+        return <input autoComplete="off" className={`${showMessage() ? "focus:border-red-400" : "focus:border-main"} flex-grow py-2 px-4 bg-bg-700 rounded-md border-transparent border-2 focus:outline-none`} placeholder={props.placeholder} type={props.inputType} value={props.value} onChange={fieldChanged} onKeyDown={props.onKeyDown} />
     }
 }
 
