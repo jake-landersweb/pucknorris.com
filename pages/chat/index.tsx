@@ -9,6 +9,7 @@ import NextImage from 'next/image'
 import '../../styles/globals.css'
 import Header from "../../components/header/header";
 import NextLink from 'next/link'
+import Head from "next/head";
 
 export default function ChuckChat() {
     const [isLoading, setIsLoading] = useState(false)
@@ -185,66 +186,73 @@ export default function ChuckChat() {
         </div>
     }
 
-    return <div className="bg-bg text-txt w-[100vw] h-[100vh] flex items-center justify-center">
-        <div className="flex flex-col h-full w-full bg-bg">
-            <div className="grid place-items-center py-2 border-b border-b-bg-600">
-                <NextLink href="/">
-                    <div className="group flex items-center transition-all">
-                        {/* image can go here */}
-                        <div className="flex items-center">
-                            <Image props={{
-                                src: '/images/pnsticker-small.png',
-                                alt: 'Puck Norris Sticker',
-                                divClass: "h-[50px] w-[50px]",
-                                imgClass: "h-[50px] w-[50px] pr-2"
-                            }} />
-                            <h1 className='font-bold text-5xl font-gains'>ChuckBot</h1>
+    return <>
+        <Head>
+            <title>Puck Norris - ChuckBot</title>
+            <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+            <meta name="description" content="Talk with Chuck Norris mixed with a hockey player! Get chirped or hear some great stories." />
+        </Head>
+        <div className="bg-bg text-txt w-[100vw] h-[100vh] flex items-center justify-center">
+            <div className="flex flex-col h-full w-full bg-bg">
+                <div className="grid place-items-center py-2 border-b border-b-bg-600">
+                    <NextLink href="/">
+                        <div className="group flex items-center transition-all">
+                            {/* image can go here */}
+                            <div className="flex items-center">
+                                <Image props={{
+                                    src: '/images/pnsticker-small.png',
+                                    alt: 'Puck Norris Sticker',
+                                    divClass: "h-[50px] w-[50px]",
+                                    imgClass: "h-[50px] w-[50px] pr-2"
+                                }} />
+                                <h1 className='font-bold text-5xl font-gains'>ChuckBot</h1>
+                            </div>
                         </div>
-                    </div>
-                </NextLink>
-            </div>
-            <div id="messages" className="overflow-scroll flex-grow flex flex-col">
-                <div className="space-y-2 pb-4">
-                    {messages()}
+                    </NextLink>
                 </div>
-            </div>
-            <div className="w-screen flex items-center justify-center border-t border-t-bg-600">
-                <div className="max-w-[1200px] px-4 lg:px-20 md:px-10 w-screen">
-                    <div className="px-8 pt-4 flex justify-center items-center">
-                        <div className="flex space-x-2 items-center flex-grow">
-                            <Field
-                                props={{
-                                    value: msg,
-                                    label: "",
-                                    placeholder: "Send a message...",
-                                    errorText: "",
-                                    inputType: "text",
-                                    onChanged: function (val: string): void {
-                                        setMsg(val);
-                                    },
-                                    isValid: true,
-                                    isTextArea: false,
-                                    limit: 500,
-                                    onKeyDown: handleKeyDown,
-                                }}
-                            />
-                            <button
-                                onClick={() => sendMessage()}
-                                className="text-white bg-main rounded-md p-2 h-min m-1 md:hover:opacity-70 transition-opacity"
-                            >
-                                <AiOutlineSend size={20} />
-                            </button>
-                        </div>
-                    </div>
-                    <div className="grid place-items-center my-4">
-                        <div className="space-x-2 flex items-center">
-                            <NextImage src={"/images/portlandai-sm.png"} alt={"Portland AI"} height={20} width={20} />
-                            <p className="text-txt-300">Powered by <a className="underline hover:no-underline" href="https://portlandai.io" target="_blank" rel="noopener noreferrer">Portland AI</a></p>
-                        </div>
+                <div id="messages" className="overflow-scroll flex-grow flex flex-col">
+                    <div className="space-y-2 pb-4">
+                        {messages()}
                     </div>
                 </div>
+                <div className="w-screen flex items-center justify-center border-t border-t-bg-600">
+                    <div className="max-w-[1200px] px-4 lg:px-20 md:px-10 w-screen">
+                        <div className="px-8 pt-4 flex justify-center items-center">
+                            <div className="flex space-x-2 items-center flex-grow">
+                                <Field
+                                    props={{
+                                        value: msg,
+                                        label: "",
+                                        placeholder: "Send a message...",
+                                        errorText: "",
+                                        inputType: "text",
+                                        onChanged: function (val: string): void {
+                                            setMsg(val);
+                                        },
+                                        isValid: true,
+                                        isTextArea: false,
+                                        limit: 500,
+                                        onKeyDown: handleKeyDown,
+                                    }}
+                                />
+                                <button
+                                    onClick={() => sendMessage()}
+                                    className="text-white bg-main rounded-md p-2 h-min m-1 md:hover:opacity-70 transition-opacity"
+                                >
+                                    <AiOutlineSend size={20} />
+                                </button>
+                            </div>
+                        </div>
+                        <div className="grid place-items-center my-4">
+                            <div className="space-x-2 flex items-center">
+                                <NextImage src={"/images/portlandai-sm.png"} alt={"Portland AI"} height={20} width={20} />
+                                <p className="text-txt-300">Powered by <a className="underline hover:no-underline" href="https://portlandai.io" target="_blank" rel="noopener noreferrer">Portland AI</a></p>
+                            </div>
+                        </div>
+                    </div>
 
+                </div>
             </div>
         </div>
-    </div>
+    </>
 }

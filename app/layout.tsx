@@ -42,7 +42,7 @@ const Root = ({ children }: { children: React.ReactNode }) => {
                 />
                 <link rel="manifest" href="/site.webmanifest" />
                 <meta name="msapplication-TileColor" content="#000000" />
-                <meta name="theme-color" content="#ffffff" />
+                <meta name="theme-color" content="#f9bf3c" />
             </head>
             <body>
                 <div className="">
