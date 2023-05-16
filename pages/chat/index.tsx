@@ -188,6 +188,22 @@ export default function ChuckChat() {
 
     return <>
         <Head>
+            <script
+                async
+                src={`https://www.googletagmanager.com/gtag/js?id=G-33RW6C2KHE`}
+            />
+            <script
+                dangerouslySetInnerHTML={{
+                    __html: `
+                        window.dataLayer = window.dataLayer || [];
+                        function gtag(){dataLayer.push(arguments);}
+                        gtag('js', new Date());
+                        gtag('config', 'G-33RW6C2KHE', {
+                        page_path: window.location.pathname,
+                        });
+                    `,
+                }}
+            />
             <title>Puck Norris - ChuckBot</title>
             <meta name="viewport" content="initial-scale=1.0, width=device-width" />
             <meta name="description" content="Talk with Chuck Norris mixed with a hockey player! Get chirped or hear some great stories." />

@@ -7,6 +7,24 @@ const Root = ({ children }: { children: React.ReactNode }) => {
     return (
         <html style={{ "scrollPaddingTop": "60px" }} lang="en" className="scroll-smooth text-txt bg-bg">
             <head>
+
+                <script
+                    async
+                    src={`https://www.googletagmanager.com/gtag/js?id=G-33RW6C2KHE`}
+                />
+                <script
+                    dangerouslySetInnerHTML={{
+                        __html: `
+                            window.dataLayer = window.dataLayer || [];
+                            function gtag(){dataLayer.push(arguments);}
+                            gtag('js', new Date());
+                            gtag('config', 'G-33RW6C2KHE', {
+                            page_path: window.location.pathname,
+                            });
+                        `,
+                    }}
+                />
+
                 <title>Puck Norris Hockey Club - Blood Sweat and Beers</title>
                 <meta charSet="UTF-8" />
                 <meta
