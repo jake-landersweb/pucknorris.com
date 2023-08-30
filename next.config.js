@@ -12,7 +12,7 @@ const nextConfig = {
       headers: [
         {
           key: 'Cache-Control',
-          value: 'no-store',
+          value: 'no-store must-revalidate',
         },
       ],
     },
@@ -21,7 +21,7 @@ const nextConfig = {
       headers: [
         {
           key: 'Cache-Control',
-          value: 'no-store',
+          value: 'no-store must-revalidate',
         },
       ],
     },
