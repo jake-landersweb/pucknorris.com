@@ -47,7 +47,9 @@ const EventCell = ({ event }: { event: Event }) => {
                 <span className='text-txt-300'> - </span>
                 <span className={`${event.homeTeam.teamId != process.env.NEXT_PUBLIC_TEAMID ? "font-bold" : "text-txt-300"}`}>{event.awayTeam.score ?? 0}</span>
             </div>
-            <p className={` text-2xl tracking-wide ${(event.homeTeam.score ?? 0) > (event.awayTeam.score ?? 0) ? !eventIsPrevious(event) ? "text-green-300" : "text-red-500" : !eventIsPrevious(event) ? "text-red-500" : "text-green-300"}`}>{(event.homeTeam.score ?? 0) > (event.awayTeam.score ?? 0) ? !eventIsPrevious(event) ? "WIN" : "LOSS" : (event.homeTeam.score ?? 0) == (event.awayTeam.score ?? 0) ? "" : !eventIsPrevious(event) ? "LOSS" : "WIN"}</p>
+
+            <p className={` text-2xl tracking-wide ${(event.homeTeam.score ?? 0) > (event.awayTeam.score ?? 0) ? eventIsHome(event) ? "text-green-300" : "text-red-500" : eventIsHome(event) ? "text-red-500" : "text-green-300"}`}>{(event.homeTeam.score ?? 0) > (event.awayTeam.score ?? 0) ? eventIsHome(event) ?  "WIN" : "LOSS" : (event.homeTeam.score ?? 0) == (event.awayTeam.score ?? 0) ? "" : eventIsHome(event) ?  "LOSS": "WIN"}</p>
+        
         </div>
     }
 
