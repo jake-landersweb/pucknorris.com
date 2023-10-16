@@ -11,9 +11,9 @@ export default async function handler(
     res: NextApiResponse<Data>
 ) {
     console.log("Sending chat request")
-    const response = await fetch(`${process.env.CHAT_HOST!}/chuckbot`, {
+    const response = await fetch(`${process.env.CHAT_HOST!}`, {
         "method": "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "x-api-key": process.env.CHAT_API_KEY! },
         body: JSON.stringify(req.body),
     })
 

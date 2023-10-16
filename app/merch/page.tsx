@@ -4,9 +4,11 @@ import Link from "../../components/link";
 import PageHeader from "../../components/pageHeader";
 import shopifyClient from "../../lib/apiRoutes/shopifyClient"
 import MerchView from "./merchView";
+import { headers } from 'next/headers'
 
 const Merch = async () => {
     const merchResponse = await shopifyClient.product.fetchAll();
+    const headersList = headers() // trick nextjs into dynamic rendering
 
     return <BoundsWrapper>
         <div className="">

@@ -48,8 +48,8 @@ const EventCell = ({ event }: { event: Event }) => {
                 <span className={`${event.homeTeam.teamId != process.env.NEXT_PUBLIC_TEAMID ? "font-bold" : "text-txt-300"}`}>{event.awayTeam.score ?? 0}</span>
             </div>
 
-            <p className={` text-2xl tracking-wide ${(event.homeTeam.score ?? 0) > (event.awayTeam.score ?? 0) ? eventIsHome(event) ? "text-green-300" : "text-red-500" : eventIsHome(event) ? "text-red-500" : "text-green-300"}`}>{(event.homeTeam.score ?? 0) > (event.awayTeam.score ?? 0) ? eventIsHome(event) ?  "WIN" : "LOSS" : (event.homeTeam.score ?? 0) == (event.awayTeam.score ?? 0) ? "" : eventIsHome(event) ?  "LOSS": "WIN"}</p>
-        
+            <p className={` text-2xl tracking-wide ${(event.homeTeam.score ?? 0) > (event.awayTeam.score ?? 0) ? eventIsHome(event) ? "text-green-300" : "text-red-500" : eventIsHome(event) ? "text-red-500" : "text-green-300"}`}>{(event.homeTeam.score ?? 0) > (event.awayTeam.score ?? 0) ? eventIsHome(event) ? "WIN" : "LOSS" : (event.homeTeam.score ?? 0) == (event.awayTeam.score ?? 0) ? "" : eventIsHome(event) ? "LOSS" : "WIN"}</p>
+
         </div>
     }
 
@@ -69,7 +69,7 @@ const EventCell = ({ event }: { event: Event }) => {
                 {largeTitle()}
                 {eventIsPrevious(event) ? <div className="grid place-items-center">{score()}</div> : null}
             </div>
-            {event.eDescription == "" ? null : <>{detailCell("Description", event.eDescription)}</>}
+            {event.eDescription == "" ? null : <>{detailCell("Description", event.eDescription.length > 200 ? event.eDescription.substring(0, 200) + "..." : event.eDescription)}</>}
             {eventLocation(event) == "" ? null : <>{detailCell("Location", eventLocation(event))}</>}
             {customFields()}
         </div>

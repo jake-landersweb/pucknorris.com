@@ -1,9 +1,11 @@
+import { headers } from "next/headers"
 import BoundsWrapper from "../../components/boundsWrapper"
 import PageHeader from "../../components/pageHeader"
 import getGallery from "../../lib/apiRoutes/getGallery"
 
 const Gallery = async () => {
     const imageData = await getGallery()
+    const headersList = headers() // trick nextjs into dynamic rendering
 
     const getImages = () => {
         const imgs = []

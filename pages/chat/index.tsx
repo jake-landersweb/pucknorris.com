@@ -10,52 +10,53 @@ import '../../styles/globals.css'
 import Header from "../../components/header/header";
 import NextLink from 'next/link'
 import Head from "next/head";
+import Footer from "../../components/footer";
 
 export default function ChuckChat() {
     const [isLoading, setIsLoading] = useState(false)
     const [msg, setMsg] = useState("")
-    const [session, setSession] = useState<ChatObject>({ messages: [], msg: "" })
-    const calledOnce = useRef(false);
-
-    const init = async () => {
-        if (session.messages.length == 0 && !isLoading) {
-            setIsLoading(true)
-            console.log("initializing conversation")
-            const response = await fetch("/api/chat/", {
-                "method": "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(session),
-            })
-            if (response.status == 200) {
-                const data = await response.json()
-                setSession(data.data)
-                setMsg("")
-            } else {
-                console.log("There was an error")
-            }
-            setIsLoading(false)
-        }
-    }
+    const [messages, setMessages] = useState<{ role: string, content: string }[]>([])
+    const [model, setModel] = useState("gpt-4")
+    const [hasError, setHasError] = useState(false)
+    const initialized = useRef(false);
+    const divRef = useRef<HTMLDivElement>(null);
+    const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
-        if (!calledOnce.current && session.messages.length === 0 && !isLoading) {
-            calledOnce.current = true;
-            init();
+        if (initialized.current) {
+            if (model && messages.length === 0 && msg === "" && !isLoading) {
+                sendMessage();
+            }
+        } else {
+            initialized.current = true;
         }
-    }, [session.messages.length, isLoading, init]);
+    }, [model, messages, msg, isLoading]);
+
+    const closeMenu = () => {
+        setIsOpen(false);
+    };
+
+    const handleClick = () => {
+        setIsOpen(!isOpen);
+    }
 
     const sendMessage = async () => {
-        if (!isLoading && msg.length != 0) {
+        if (!isLoading) {
+            setHasError(false)
             console.log("sending message")
             setIsLoading(true)
             const body = {
-                msg: msg,
-                messages: session.messages,
+                model: model,
+                new_message: msg,
+                messages: messages,
+                health_check: false,
             }
-            setSession((prevState) => ({
-                ...prevState,
-                messages: [...prevState.messages, { role: "user", content: msg }],
-            }));
+            if (msg != "") {
+                setMessages((prevState) => [
+                    ...prevState,
+                    { role: "user", content: msg }
+                ]);
+            }
             setTimeout(scrollToBottom, 200);
             setMsg("")
             const response = await fetch("/api/chat/", {
@@ -65,23 +66,32 @@ export default function ChuckChat() {
             })
             if (response.status == 200) {
                 const data = await response.json()
-                console.log(data)
-                setSession(data.data)
+                setMessages(data.data.messages)
+                console.log(data.data.messages)
                 setTimeout(scrollToBottom, 200);
             } else {
                 console.log("There was an error")
+                setHasError(true)
             }
             setIsLoading(false)
-
         }
     }
 
+    const changeModel = (name: string) => {
+        setModel(name)
+        setMessages([])
+        setMsg("")
+        closeMenu()
+    }
+
     function scrollToBottom() {
-        const div = document.getElementById('messages');
-        div?.scrollTo({
-            top: div.scrollHeight,
-            behavior: 'smooth'
-        });
+        // const div = document.getElementById('messages');
+
+        // div?.scrollTo({
+        //     top: div.scrollHeight,
+        //     behavior: 'smooth'
+        // });
+        divRef.current?.scrollTo(0, divRef.current.scrollHeight);
     }
 
 
@@ -91,26 +101,32 @@ export default function ChuckChat() {
         }
     }
 
-    const messages = () => {
+    const messageList = () => {
         const items = []
 
-        for (let i = 1; i < session.messages.length; i++) {
-            if (session.messages[i].role == "user") {
-                items.push(userCell(session.messages[i].content))
+        for (let i = 0; i < messages.length; i++) {
+            if (messages[i].role == "user") {
+                items.push(userCell(messages[i].content))
             } else {
-                items.push(botCell(session.messages[i].content))
+                items.push(botCell(messages[i].content))
             }
         }
 
         if (isLoading) {
-            if (session.messages.length == 0) {
-                items.push(loadingCell())
-            } else {
-                items.push(loadingCell())
-            }
+            items.push(loadingCell())
         }
 
         return items
+    }
+
+    const modelName = () => {
+        switch (model) {
+            case "gpt-4": return "ChuckBot 4.0";
+            case "gpt-3.5": return "ChuckBut 3.0";
+            case "claude-2": return "Claude-Giroux";
+            case "claude-instant": return "Claude-Giroux Slow";
+            default: return "Unknown";
+        }
     }
 
     const userCell = (m: string) => {
@@ -144,7 +160,7 @@ export default function ChuckChat() {
                                     divClass: "max-h-[75px]",
                                     imgClass: "max-h-[75px]"
                                 }} />
-                                <p className="text-txt-500 text-sm">ChuckBot</p>
+                                <p className="text-txt-500 text-sm">{modelName()}</p>
                             </div>
                         </div>
                         <div className="col-span-6 flex flex-col justify-center">
@@ -169,7 +185,7 @@ export default function ChuckChat() {
                                     divClass: "max-h-[75px]",
                                     imgClass: "max-h-[75px]"
                                 }} />
-                                <p className="text-txt-500 text-sm">ChuckBot</p>
+                                <p className="text-txt-500 text-sm">{modelName()}</p>
                             </div>
                         </div>
                         <div className="col-span-6 flex flex-col justify-center">
@@ -186,55 +202,88 @@ export default function ChuckChat() {
         </div>
     }
 
-    return <>
-        <Head>
-            <script
-                async
-                src={`https://www.googletagmanager.com/gtag/js?id=G-33RW6C2KHE`}
-            />
-            <script
-                dangerouslySetInnerHTML={{
-                    __html: `
-                        window.dataLayer = window.dataLayer || [];
-                        function gtag(){dataLayer.push(arguments);}
-                        gtag('js', new Date());
-                        gtag('config', 'G-33RW6C2KHE', {
-                        page_path: window.location.pathname,
-                        });
-                    `,
-                }}
-            />
-            <title>Puck Norris - ChuckBot</title>
-            <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-            <meta name="description" content="Talk with Chuck Norris mixed with a hockey player! Get chirped or hear some great stories." />
-        </Head>
-        <div className="bg-bg text-txt w-[100vw] h-[100vh] flex items-center justify-center">
-            <div className="flex flex-col h-full w-full bg-bg">
-                <div className="grid place-items-center py-2 border-b border-b-bg-600">
-                    <NextLink href="/">
-                        <div className="group flex items-center transition-all">
-                            {/* image can go here */}
-                            <div className="flex items-center">
-                                <Image props={{
-                                    src: '/images/pnsticker-small.png',
-                                    alt: 'Puck Norris Sticker',
-                                    divClass: "h-[50px] w-[50px]",
-                                    imgClass: "h-[50px] w-[50px] pr-2"
-                                }} />
-                                <h1 className='font-bold text-5xl font-gains'>ChuckBot</h1>
-                            </div>
+    const body = () => {
+        if (hasError) {
+            return <div className="grid place-items-center">
+                <h3>There was an error!</h3>
+                <button onClick={() => sendMessage()} className="bg-main text-black rounded-md px-8 py-2 md:hover:bg-opacity-50 transition-all">Try Again</button>
+            </div>
+        } else {
+            return <div id="messages" className="space-y-2 pb-4">
+                {messageList()}
+            </div>
+        }
+    }
+
+    const modelButtons = () => {
+        return <div className="space-y-2">
+            {modelButton("ChuckBot 3.0", "gpt-3.5", "The classic chuckbot. Mean, green, chirping machine. Not for the fair hearted.")}
+            {modelButton("ChuckBot 4.0", "gpt-4", "The original personality, supercharged with OpenAI's GPT-4. He may outsmart you.")}
+            {modelButton("Claude-Giroux", "claude-2", "The ever friendly Claude-Giroux bot! It is impossible for him to be mean.")}
+            {modelButton("Claude-Giroux Instant", "claude-instant", "Like Claude-Giroux, but just a little less smart. But he is quite fast.")}
+        </div>
+    }
+
+    const modelButton = (title: string, name: string, desc: string) => {
+        return <button onClick={() => changeModel(name)} className={`${model == name ? 'border-main' : 'border-bg-500'} bg-bg-500 border rounded-md p-2 md:hover:opacity-50 transition-all`}>
+            <h3 className="text-xl font-semibold">{title}</h3>
+            <p className="text-gray-300">{desc}</p>
+        </button>
+    }
+
+    return <div className="grid place-items-center">
+        <div className="fixed top-0 z-50">
+            <div className="bg-bg dark:bg-bg-dark bg-opacity-50 backdrop-blur-sm h-[60px] items-center w-screen grid place-items-center transition-all duration-300">
+                <div className="flex items-center justify-between max-w-[2000px] w-full px-2 lg:px-10">
+                    <div className="flex space-x-4">
+                        <div className="">
+                            <NextLink href="/" onClick={(e) => closeMenu()}>
+                                <div className="group flex items-center transition-all">
+                                    {/* image can go here */}
+                                    <div className="flex items-center">
+                                        <Image props={{
+                                            src: '/images/pnsticker-small.png',
+                                            alt: 'Puck Norris Sticker',
+                                            divClass: "h-[50px] w-[50px]",
+                                            imgClass: "h-[50px] w-[50px] pr-2"
+                                        }} />
+                                        <h1 className='hidden md:block font-bold text-5xl font-gains'>Puck Norris</h1>
+                                    </div>
+                                </div>
+                            </NextLink>
                         </div>
-                    </NextLink>
-                </div>
-                <div id="messages" className="overflow-scroll flex-grow flex flex-col">
-                    <div className="space-y-2 pb-4">
-                        {messages()}
                     </div>
+                    <button onClick={handleClick} className={`text-txt-400 focus:outline-none fixed right-2 z-50`}>
+                        {/* <span className="sr-only">Open main menu</span>
+                        <div
+                            className="block w-5 absolute left-1/2 top-1/2   transform  -translate-x-1/2 -translate-y-1/2">
+                            <span aria-hidden="true" className={`${isOpen ? 'rotate-45' : '-translate-y-1.5'} block absolute h-0.5 w-5 bg-current transform transition duration-500 ease-in-out`}></span>
+                            <span aria-hidden="true"
+                                className={`${isOpen ? 'opacity-0' : ''}  block absolute  h-0.5 w-5 bg-current   transform transition duration-500 ease-in-out`}></span>
+                            <span aria-hidden="true"
+                                className={`${isOpen ? "-rotate-45" : "translate-y-1.5"}  block absolute  h-0.5 w-5 bg-current transform  transition duration-500 ease-in-out`}></span>
+                        </div> */}
+                        <div className="bg-bg-500 rounded-md md:hover:opacity-50 py-2 transition-all w-[110px] grid place-items-center">
+                            <p>{isOpen ? "Close" : "Personality"}</p>
+                        </div>
+                    </button>
+                    <div
+                        className={`top-0 right-0 w-[75vw] max-w-[400px] py-[75px] pb-4 space-y-2 px-4 bg-bg-700 fixed h-screen z-40 ease-in-out duration-300 border-l border-bg-500 overflow-auto ${isOpen ? "translate-x-0 " : "translate-x-full"}`}>
+                        <h3 className='text-2xl font-bold'>Available</h3>
+                        {modelButtons()}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div className="relative h-screen w-screen flex flex-col overflow-hidden">
+            <div className="bg-bg flex flex-col h-full">
+                <div ref={divRef} className="flex-1 overflow-y-scroll mt-[65px]" style={{ scrollBehavior: 'smooth' }}>
+                    {body()}
                 </div>
                 <div className="w-screen flex items-center justify-center border-t border-t-bg-600">
                     <div className="max-w-[1200px] px-4 lg:px-20 md:px-10 w-screen">
                         <div className="px-8 pt-4 flex justify-center items-center">
-                            <div className="flex space-x-2 items-center flex-grow">
+                            <div className="flex space-x-2 items-center flex-grow h-[50px]">
                                 <Field
                                     props={{
                                         value: msg,
@@ -253,7 +302,7 @@ export default function ChuckChat() {
                                 />
                                 <button
                                     onClick={() => sendMessage()}
-                                    className="text-white bg-main rounded-md p-2 h-min m-1 md:hover:opacity-70 transition-opacity"
+                                    className="text-white bg-main rounded-md p-[11px] h-min m-1 md:hover:opacity-70 transition-opacity"
                                 >
                                     <AiOutlineSend size={20} />
                                 </button>
@@ -261,14 +310,14 @@ export default function ChuckChat() {
                         </div>
                         <div className="grid place-items-center my-4">
                             <div className="space-x-2 flex items-center">
-                                <NextImage src={"/images/portlandai-sm.png"} alt={"Portland AI"} height={20} width={20} />
-                                <p className="text-txt-300">Powered by <a className="underline hover:no-underline" href="https://portlandai.io" target="_blank" rel="noopener noreferrer">Portland AI</a></p>
+                                <NextImage src={"/images/sapphire.png"} alt={"Sapphire NW"} height={20} width={20} />
+                                <p className="text-txt-300">Powered by <a className="underline hover:no-underline" href="https://sapphirenw.com" target="_blank" rel="noopener noreferrer">Sapphire NW</a></p>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
-    </>
+    </div>
+
 }
