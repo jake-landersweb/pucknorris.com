@@ -16,19 +16,19 @@ export default function ChuckChat() {
     const [isLoading, setIsLoading] = useState(false)
     const [msg, setMsg] = useState("")
     const [messages, setMessages] = useState<{ role: string, content: string }[]>([])
-    const [model, setModel] = useState("gpt-4")
+    const [model, setModel] = useState("")
     const [hasError, setHasError] = useState(false)
-    const initialized = useRef(false);
     const divRef = useRef<HTMLDivElement>(null);
     const [isOpen, setIsOpen] = useState(false);
+    const [initialized, setInitialized] = useState(false);
 
     useEffect(() => {
-        if (initialized.current) {
-            if (model && messages.length === 0 && msg === "" && !isLoading) {
-                sendMessage();
-            }
-        } else {
-            initialized.current = true;
+        if (!initialized) {
+            setInitialized(true);
+            return;
+        }
+        if (model && messages.length === 0 && msg === "") {
+            sendMessage();
         }
     }, [model, messages, msg, isLoading]);
 
@@ -43,7 +43,7 @@ export default function ChuckChat() {
     const sendMessage = async () => {
         if (!isLoading) {
             setHasError(false)
-            console.log("sending message")
+            console.log("sending message with model: '" + model + "'")
             setIsLoading(true)
             const body = {
                 model: model,
@@ -208,6 +208,13 @@ export default function ChuckChat() {
                 <h3>There was an error!</h3>
                 <button onClick={() => sendMessage()} className="bg-main text-black rounded-md px-8 py-2 md:hover:bg-opacity-50 transition-all">Try Again</button>
             </div>
+        } else if (messages.length == 0 && !isLoading) {
+            return <div className="grid place-items-center space-y-2 p-4">
+                <h2 className="text-xl md:text-2xl font-bold">Select Personality</h2>
+                <div className="max-w-2xl gap-2 grid place-items-center">
+                    {modelButtons()}
+                </div>
+            </div>
         } else {
             return <div id="messages" className="space-y-2 pb-4">
                 {messageList()}
@@ -216,12 +223,12 @@ export default function ChuckChat() {
     }
 
     const modelButtons = () => {
-        return <div className="space-y-2">
-            {modelButton("ChuckBot 3.0", "gpt-3.5", "The classic chuckbot. Mean, green, chirping machine. Not for the fair hearted.")}
-            {modelButton("ChuckBot 4.0", "gpt-4", "The original personality, supercharged with OpenAI's GPT-4. He may outsmart you.")}
-            {modelButton("Claude-Giroux", "claude-2", "The ever friendly Claude-Giroux bot! It is impossible for him to be mean.")}
-            {modelButton("Claude-Giroux Instant", "claude-instant", "Like Claude-Giroux, but just a little less smart. But he is quite fast.")}
-        </div>
+        return [
+            modelButton("ChuckBot 3.0", "gpt-3.5", "The classic chuckbot. Mean, green, chirping machine. Not for the fair hearted."),
+            modelButton("ChuckBot 4.0", "gpt-4", "The original personality, supercharged with OpenAI's GPT-4. He may outsmart you."),
+            modelButton("Claude-Giroux", "claude-2", "The ever friendly Claude-Giroux bot! It is impossible for him to be mean."),
+            modelButton("Claude-Giroux Instant", "claude-instant", "Like Claude-Giroux, but just a little less smart. But he is quite fast."),
+        ]
     }
 
     const modelButton = (title: string, name: string, desc: string) => {
@@ -270,7 +277,9 @@ export default function ChuckChat() {
                     <div
                         className={`top-0 right-0 w-[75vw] max-w-[400px] py-[75px] pb-4 space-y-2 px-4 bg-bg-700 fixed h-screen z-40 ease-in-out duration-300 border-l border-bg-500 overflow-auto ${isOpen ? "translate-x-0 " : "translate-x-full"}`}>
                         <h3 className='text-2xl font-bold'>Available</h3>
-                        {modelButtons()}
+                        <div className="space-y-2">
+                            {modelButtons()}
+                        </div>
                     </div>
                 </div>
             </div>
