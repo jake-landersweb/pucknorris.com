@@ -41,6 +41,7 @@ const Header = () => {
 
     const menu = (className: string) => {
         return <div className={className}>
+            {headerItem("@pucknorrishockeyclub", "https://www.instagram.com/pucknorrishockeyclub")}
             {headerItem("ChuckBot", "/chat")}
             {headerItem("Schedule", "/schedule")}
             {headerItem("Merch", "/merch")}
@@ -104,6 +105,17 @@ const Header = () => {
                     <h3 className='text-2xl font-bold'>Puck Norris</h3>
                     <div>
                         <HeaderItem props={{
+                            route: 'https://www.instagram.com/pucknorrishockeyclub',
+                            title: '@pucknorrishockeyclub',
+                            onTap: () => closeMenu(),
+                            isCollapsed: false,
+                            className: "dark:bg-bg-500 py-2 px-4 cursor-pointer rounded-md w-full",
+                            isExternal: true,
+                        }} />
+                    </div>
+                    
+                    <div>
+                        <HeaderItem props={{ 
                             route: '/chat',
                             title: 'ChuckBot',
                             onTap: () => closeMenu(),
