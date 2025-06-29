@@ -38,6 +38,5 @@ next-env.d.ts
 .vscode
 
 docker-compose.yml
-Dockerfile
 
 old-pucknorris.com

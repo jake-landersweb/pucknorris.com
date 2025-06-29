@@ -1,3 +1,4 @@
+import { headers } from "next/headers"
 import BoundsWrapper from "../../components/boundsWrapper"
 import PageHeader from "../../components/pageHeader"
 import SeasonNodeCell from "../../components/seasonNode"
@@ -6,6 +7,7 @@ import getScheduleFull from "../../lib/apiRoutes/getScheduleFull"
 import slufigy from "../../lib/functions/slugify"
 
 const Schedule = async () => {
+    const headersList = headers() // trick nextjs into dynamic rendering
     const schedule = await getScheduleFull()
 
     const seasonNodes = () => {

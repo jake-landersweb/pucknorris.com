@@ -7,8 +7,8 @@ import MerchView from "./merchView";
 import { headers } from 'next/headers'
 
 const Merch = async () => {
-    const merchResponse = await shopifyClient.product.fetchAll();
     const headersList = headers() // trick nextjs into dynamic rendering
+    const merchResponse = await shopifyClient.product.fetchAll();
 
     return <BoundsWrapper>
         <div className="">
