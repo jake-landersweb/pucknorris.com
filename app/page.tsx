@@ -1,3 +1,4 @@
+import { headers } from "next/headers"
 import BoundsWrapper from "../components/boundsWrapper"
 import Image from "../components/image"
 import Link from "../components/link"
@@ -7,6 +8,7 @@ import getSchedule from "../lib/apiRoutes/getSchedule"
 import shopifyClient from "../lib/apiRoutes/shopifyClient"
 
 const Index = async () => {
+    const headersList = headers() // trick nextjs into dynamic rendering
     const schedule = await getSchedule()
     const merchResponse = await shopifyClient.product.fetchAll();
 
