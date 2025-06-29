@@ -63,7 +63,7 @@ const Index = async () => {
                         child: <>
                             <div className="grid place-items-center">
                                 <div className="bg-main text-black rounded-md px-4 py-2 md:hover:opacity-50 transition-opacity">
-                                    <p>Chat with our Hockey Player AIs!</p>
+                                    <p>Chat with our Hockey Player AIs ChuckBot 4.0 and Claude-2 Giroux</p>
                                 </div>
                             </div>
                         </>,

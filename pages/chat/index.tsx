@@ -11,22 +11,33 @@ import Header from "../../components/header/header";
 import NextLink from 'next/link'
 import Head from "next/head";
 import Footer from "../../components/footer";
+import { GetServerSideProps } from "next";
 
-export default function ChuckChat() {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    let m = context.query.model ?? "gpt-4"
+
+    return {
+        props: {
+            m: m
+        }
+    }
+}
+
+export default function ChuckChat({m}: {m: string}) {
     const [isLoading, setIsLoading] = useState(false)
     const [msg, setMsg] = useState("")
     const [messages, setMessages] = useState<{ role: string, content: string }[]>([])
-    const [model, setModel] = useState("")
+    const [model, setModel] = useState(m)
     const [hasError, setHasError] = useState(false)
     const divRef = useRef<HTMLDivElement>(null);
     const [isOpen, setIsOpen] = useState(false);
     const [initialized, setInitialized] = useState(false);
 
     useEffect(() => {
-        if (!initialized) {
-            setInitialized(true);
-            return;
-        }
+        // if (!initialized) {
+        //     setInitialized(true);
+        //     return;
+        // }
         if (model && messages.length === 0 && msg === "") {
             sendMessage();
         }
@@ -123,8 +134,18 @@ export default function ChuckChat() {
         switch (model) {
             case "gpt-4": return "ChuckBot 4.0";
             case "gpt-3.5": return "ChuckBut 3.0";
-            case "claude-2": return "Claude-Giroux";
-            case "claude-instant": return "Claude-Giroux Slow";
+            case "claude-2": return "Claude-2 Giroux Bot";
+            case "claude-instant": return "Claude-2 Giroux Slow";
+            default: return "Unknown";
+        }
+    }
+
+    const imageName = () => {
+        switch (model) {
+            case "gpt-4": return "/images/pucknorris.png";
+            case "gpt-3.5": return "/images/pucknorris.png";
+            case "claude-2": return "/images/claude2.png";
+            case "claude-instant": return "/images/claude2.png";
             default: return "Unknown";
         }
     }
@@ -155,7 +176,7 @@ export default function ChuckChat() {
                         <div className="col-span-2 grid place-items-center">
                             <div className="space-y-2 grid place-items-center">
                                 <Image props={{
-                                    src: "/images/pucknorris.png",
+                                    src: imageName(),
                                     alt: "",
                                     divClass: "max-h-[75px]",
                                     imgClass: "max-h-[75px]"
@@ -180,7 +201,7 @@ export default function ChuckChat() {
                         <div className="col-span-2 grid place-items-center">
                             <div className="space-y-2 grid place-items-center">
                                 <Image props={{
-                                    src: "/images/pucknorris.png",
+                                    src: imageName(),
                                     alt: "",
                                     divClass: "max-h-[75px]",
                                     imgClass: "max-h-[75px]"
@@ -224,10 +245,10 @@ export default function ChuckChat() {
 
     const modelButtons = () => {
         return [
-            modelButton("ChuckBot 3.0", "gpt-3.5", "The classic chuckbot. Mean, green, chirping machine. Not for the fair hearted."),
-            modelButton("ChuckBot 4.0", "gpt-4", "The original personality, supercharged with OpenAI's GPT-4. He may outsmart you."),
-            modelButton("Claude-Giroux", "claude-2", "The ever friendly Claude-Giroux bot! It is impossible for him to be mean."),
-            modelButton("Claude-Giroux Instant", "claude-instant", "Like Claude-Giroux, but just a little less smart. But he is quite fast."),
+            //modelButton("ChuckBot 3.0", "gpt-3.5", "The classic chuckbot. Mean, green, chirping machine. Not for the fair hearted."),
+            modelButton("ChuckBot 4.0", "gpt-4", "The original personality, supercharged with OpenAI's GPT-4. He's kind of an asshole and may outsmart you."),
+            modelButton("Claude-2 Giroux Bot", "claude-2", "The ever friendly Claude-2 Giroux bot powered by Anthropics Claude 2 AI model! It is impossible for him to be mean."),
+            //modelButton("Jean Claude Instant", "claude-instant", "Like Jean Claude bot, but just a little less smart. But he is quite fast."),
         ]
     }
 
@@ -271,7 +292,7 @@ export default function ChuckChat() {
                                 className={`${isOpen ? "-rotate-45" : "translate-y-1.5"}  block absolute  h-0.5 w-5 bg-current transform  transition duration-500 ease-in-out`}></span>
                         </div> */}
                         <div className="bg-bg-500 rounded-md md:hover:opacity-50 py-2 transition-all w-[110px] grid place-items-center">
-                            <p>{isOpen ? "Close" : "Personality"}</p>
+                            <p>{isOpen ? "Close" : "Change Bot"}</p>
                         </div>
                     </button>
                     <div
