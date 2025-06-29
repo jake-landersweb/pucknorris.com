@@ -2,6 +2,9 @@ import React from "react"
 import Footer from "../components/footer";
 import Header from "../components/header/header";
 import "../styles/globals.css";
+import { Providers } from "./providers";
+
+export const dynamic = 'force-dynamic'
 
 const Root = ({ children }: { children: React.ReactNode }) => {
     return (
@@ -63,17 +66,21 @@ const Root = ({ children }: { children: React.ReactNode }) => {
                 <meta name="theme-color" content="#f9bf3c" />
             </head>
             <body>
-                <div className="">
-                    <div className="fixed top-0 z-50 left-0">
-                        <Header />
-                    </div>
-                    <div className="my-[80px]">
-                        {children}
-                    </div>
-                    <div className="">
-                        <Footer />
-                    </div>
-                </div>
+                <Providers>
+                    <main>
+                        <div className="">
+                            <div className="fixed top-0 z-50 left-0">
+                                <Header />
+                            </div>
+                            <div className="my-[80px]">
+                                {children}
+                            </div>
+                            <div className="">
+                                <Footer />
+                            </div>
+                        </div>
+                    </main>
+                </Providers>
             </body>
         </html>
     );

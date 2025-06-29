@@ -1,5 +1,7 @@
 import NextLink from 'next/link'
 
+import type { JSX } from "react";
+
 type LinkProps = {
     href: string
     child: JSX.Element
