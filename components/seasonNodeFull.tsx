@@ -11,7 +11,7 @@ const SeasonNodeCellFull = ({ node }: { node: SeasonNodeFull }) => {
                 return null
             } else {
                 for (var i = 0; i < node.previousEvents!.length; i++) {
-                    cells.push(<div className={`${i < node.previousEvents!.length - 1 ? "border-b border-b-bg-500" : ""}`}><EventCellCompact event={node.previousEvents![i]} /></div>)
+                    cells.push(<div key={`season-node-full-${i}`} className={`${i < node.previousEvents!.length - 1 ? "border-b border-b-bg-500" : ""}`}><EventCellCompact event={node.previousEvents![i]} /></div>)
                 }
             }
         } else {
@@ -19,7 +19,7 @@ const SeasonNodeCellFull = ({ node }: { node: SeasonNodeFull }) => {
                 return null
             } else {
                 for (var i = 0; i < node.nextEvents!.length; i++) {
-                    cells.push(<div className={`${i < node.nextEvents!.length - 1 ? "border-b border-b-bg-500" : ""}`}><EventCellCompact event={node.nextEvents![i]} /></div>)
+                    cells.push(<div key={`season-node-full-${i}`} className={`${i < node.nextEvents!.length - 1 ? "border-b border-b-bg-500" : ""}`}><EventCellCompact event={node.nextEvents![i]} /></div>)
                 }
             }
         }
