@@ -1,45 +1,47 @@
-# FROM https://github.com/vercel/next.js/blob/canary/examples/with-docker/Dockerfile
-FROM node:18-alpine AS base
+# Optimized multi-platform Dockerfile for Next.js
+FROM --platform=$BUILDPLATFORM node:22-alpine AS base
 
-
-# install system deps
+# Install system dependencies
 FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# install npm packages
+# Install npm packages (runs on build platform for speed)
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN --mount=type=cache,target=/root/.npm \
+    npm ci --cache /root/.npm --prefer-offline
 
-# use a builder step
+# Builder stage (runs on build platform)
 FROM base AS builder
 WORKDIR /app
 
-# copy the source code and build
+# Copy dependencies and source code
 COPY --from=deps /app/node_modules ./node_modules
-COPY . . 
-RUN npm run build
+COPY . .
 
-FROM base AS runner
+# Build the application with cache mounts
+RUN --mount=type=cache,target=/root/.npm \
+    --mount=type=cache,target=/app/.next/cache \
+    npm run build
+
+# Runtime stage (uses target platform)
+FROM node:22-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 
-# create a user group
+# Create user group
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-# copy the public assets
+# Copy built application
 COPY --from=builder /app/public ./public
-
-# copy the compiled bundle
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# set the runtime environment
+# Set runtime configuration
 USER nextjs
 EXPOSE 3000
 ENV PORT=3000
-
-# run the server
 ENV HOSTNAME="0.0.0.0"
+
 CMD ["node", "server.js"]
