@@ -86,7 +86,7 @@ const Footer = () => {
             </BoundsWrapper>
         </div>
         <div className="bg-bg-600 p-4">
-            <span className="block text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2022 <a href="https://sapphirenw.com/" target="_blank" rel="noopener noreferrer" className="hover:underline">Sapphire™</a>. All Rights Reserved.</span>
+            <span className="block text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2026 <a href="https://sapphirenw.com/" target="_blank" rel="noopener noreferrer" className="hover:underline">Sapphire™</a>. All Rights Reserved.</span>
         </div>
     </footer>
 
