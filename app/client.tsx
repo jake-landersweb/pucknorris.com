@@ -159,7 +159,7 @@ const IndexClient = () => {
                 </div>
                 <div className="space-y-4 flex flex-col items-stretch">
                     {/* Content section */}
-                    <div className="space-y-2 text-center border-2 border-main rounded-lg p-4 shadow-[0_0_15px_rgba(255,200,0,0.15)]">
+                    <div className="space-y-2 text-center border border-white/15 rounded-lg p-4">
                         <h2 className="text-2xl lg:text-4xl font-medium font-gains tracking-wide">Puck Norris Hockey Club</h2>
                         <h4 className="text-main text-xl lg:text-2xl font-gains">Blood, Sweat, &#38; Beers!</h4>
                         <p className="text-gray-500 text-sm lg:text-base">The most badass men's league hockey team in the PNW! We play hockey, have fun, and most importantly, drink good beer.</p>
@@ -177,7 +177,7 @@ const IndexClient = () => {
                         }} />
                     </div>
                     {/* Schedule section */}
-                    <div className="border-2 border-main rounded-lg p-4 shadow-[0_0_15px_rgba(255,200,0,0.15)] space-y-4">
+                    <div className="border border-white/15 rounded-lg p-4 space-y-4">
                         {upcomingCells()}
                     </div>
                 </div>
