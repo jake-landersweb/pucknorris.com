@@ -5,7 +5,6 @@ import { JSX, useState, useEffect } from "react"
 import BoundsWrapper from "../components/boundsWrapper"
 import Image from "../components/image"
 import Link from "../components/link"
-import PageHeader from "../components/pageHeader"
 import SeasonNodeCell from "../components/seasonNode"
 import getSchedule from "../lib/apiRoutes/getSchedule"
 import shopifyClient from "../lib/apiRoutes/shopifyClient"
@@ -21,56 +20,13 @@ const IndexClient = () => {
     const merchResponseResponse = useQuery({
         queryKey: ["shopify-products-all"],
         queryFn: async () => {
-            const products = await shopifyClient.product.fetchAll()
+            const products = await shopifyClient().product.fetchAll()
             return serializeData(products)
         },
     })
 
-    if (scheduleResponse.isLoading || merchResponseResponse.isLoading) {
-        return <div className="">Loading</div>
-    }
-
     const schedule = scheduleResponse.data
     const merchResponse = merchResponseResponse.data
-
-
-    const upcomingCells = () => {
-        if (schedule === undefined) {
-            return []
-        }
-
-        const nextGames: JSX.Element[] = []
-        const previousGames: JSX.Element[] = []
-
-        for (var i = 0; i < schedule['body'].length; i++) {
-            if (schedule['body'][i].nextEvent != undefined) {
-                nextGames.push(<SeasonNodeCell key={`schedule-cell-next-${i}`} title={schedule['body'][i]['title']} event={schedule['body'][i]['nextEvent']} isPrevious={false} />)
-            }
-            if (schedule['body'][i].previousEvent != undefined) {
-                previousGames.push(<SeasonNodeCell key={`schedule-cell-previous-${i}`} title={schedule['body'][i]['title']} event={schedule['body'][i]['previousEvent']} isPrevious={true} compact={true} />)
-            }
-        }
-
-        const items: JSX.Element[] = []
-
-        if (nextGames.length > 0) {
-            items.push(
-                <div key="next-games-row" className={`grid grid-cols-1 gap-4 ${nextGames.length >= 2 ? "lg:grid-cols-2" : "lg:grid-cols-1"}`}>
-                    {nextGames}
-                </div>
-            )
-        }
-
-        if (previousGames.length > 0) {
-            items.push(
-                <div key="previous-games-row" className={`grid grid-cols-1 gap-4 ${previousGames.length >= 2 ? "lg:grid-cols-2" : "lg:grid-cols-1"}`}>
-                    {previousGames}
-                </div>
-            )
-        }
-
-        return items
-    }
 
     const getMerchItems = () => {
         if (merchResponse === undefined) {
@@ -90,6 +46,54 @@ const IndexClient = () => {
         }, 4000)
         return () => clearInterval(interval)
     }, [merchItems.length])
+
+    if (scheduleResponse.isLoading || merchResponseResponse.isLoading) {
+        return <div className="">Loading</div>
+    }
+
+    const upcomingCells = () => {
+        if (!schedule?.body) {
+            return []
+        }
+
+        const nextGames: JSX.Element[] = []
+        const previousGames: JSX.Element[] = []
+
+        for (var i = 0; i < schedule['body'].length; i++) {
+            if (schedule['body'][i].nextEvent != undefined) {
+                nextGames.push(<SeasonNodeCell key={`schedule-cell-next-${i}`} title={schedule['body'][i]['title']} event={schedule['body'][i]['nextEvent']} isPrevious={false} />)
+            }
+            if (schedule['body'][i].previousEvent != undefined) {
+                previousGames.push(<SeasonNodeCell key={`schedule-cell-previous-${i}`} title={schedule['body'][i]['title']} event={schedule['body'][i]['previousEvent']} isPrevious={true} compact={true} />)
+            }
+        }
+
+        const items: JSX.Element[] = []
+
+        if (nextGames.length > 0) {
+            items.push(
+                <div key="next-games-row" className="space-y-2">
+                    <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Next Game</p>
+                    <div className={`grid grid-cols-1 gap-4 ${nextGames.length >= 2 ? "lg:grid-cols-2" : "lg:grid-cols-1"}`}>
+                        {nextGames}
+                    </div>
+                </div>
+            )
+        }
+
+        if (previousGames.length > 0) {
+            items.push(
+                <div key="previous-games-row" className="space-y-2">
+                    <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Previous Game</p>
+                    <div className={`grid grid-cols-1 gap-4 ${previousGames.length >= 2 ? "lg:grid-cols-2" : "lg:grid-cols-1"}`}>
+                        {previousGames}
+                    </div>
+                </div>
+            )
+        }
+
+        return items
+    }
 
     const merchSlideshow = () => {
         if (merchItems.length === 0) return null
@@ -162,13 +166,15 @@ const IndexClient = () => {
                     <div className="space-y-2 text-center border border-white/15 rounded-lg p-4">
                         <h2 className="text-2xl lg:text-4xl font-medium font-gains tracking-wide">Puck Norris Hockey Club</h2>
                         <h4 className="text-main text-xl lg:text-2xl font-gains">Blood, Sweat, &#38; Beers!</h4>
-                        <p className="text-gray-500 text-sm lg:text-base">The most badass men's league hockey team in the PNW! We play hockey, have fun, and most importantly, drink good beer.</p>
+                        <p className="text-gray-500 text-sm lg:text-base">Dusters puck off! We're ripping bardownskis, guzzlin' the coldest brews and ruling the PNW like a beauty. Tag along if you've got the stones, buddy!  -- ChuckBot</p>
+                        {/* <p className="text-gray-500 text-sm lg:text-base">The most badass men's league hockey team in the PNW! We play hockey, have fun, and most importantly, drink good beer.</p> */}
+
                         <Link props={{
                             href: "/chat",
                             child: <>
                                 <div className="grid place-items-center pt-2">
                                     <div className="bg-main text-black rounded-md px-3 py-1.5 md:hover:opacity-50 transition-opacity text-sm">
-                                        <p>Chat with our Hockey AI ChatBots!</p>
+                                        <p>Chat with ChuckBot! Ask him anything but prepare yourself for the attitude. </p>
                                     </div>
                                 </div>
                             </>,
@@ -179,6 +185,14 @@ const IndexClient = () => {
                     {/* Schedule section */}
                     <div className="border border-white/15 rounded-lg p-4 space-y-4">
                         {upcomingCells()}
+                        <div className="text-center pt-1">
+                            <Link props={{
+                                href: "/schedule",
+                                child: <p className="text-sm text-main hover:underline">Full Schedule →</p>,
+                                isExternal: false,
+                                className: "block"
+                            }} />
+                        </div>
                     </div>
                 </div>
             </div>

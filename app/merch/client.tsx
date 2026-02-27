@@ -12,7 +12,7 @@ const MerchClient = () => {
     const merchResponseResponse = useQuery({
         queryKey: ["shopify-products-all"],
         queryFn: async () => {
-            const products = await shopifyClient.product.fetchAll()
+            const products = await shopifyClient().product.fetchAll()
             return serializeData(products)
         },
     })

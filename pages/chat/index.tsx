@@ -1,16 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import BoundsWrapper from "../../components/boundsWrapper";
 import Field from "../../components/field";
 import { AiOutlineSend } from 'react-icons/ai'
-import ChatObject from "../../lib/data/chatObject";
 import Image from "../../components/image";
 import { FaUserCircle } from 'react-icons/fa'
 import NextImage from 'next/image'
 import '../../styles/globals.css'
 import Header from "../../components/header/header";
-import NextLink from 'next/link'
-import Head from "next/head";
-import Footer from "../../components/footer";
 import { GetServerSideProps } from "next";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -259,60 +254,38 @@ export default function ChuckChat({m}: {m: string}) {
         </button>
     }
 
-    return <div className="grid place-items-center">
-        <div className="fixed top-0 z-50">
-            <div className="bg-bg dark:bg-bg-dark bg-opacity-50 backdrop-blur-sm h-[60px] items-center w-screen grid place-items-center transition-all duration-300">
-                <div className="flex items-center justify-between max-w-[2000px] w-full px-2 lg:px-10">
-                    <div className="flex space-x-4">
-                        <div className="">
-                            <NextLink href="/" onClick={(e) => closeMenu()}>
-                                <div className="group flex items-center transition-all">
-                                    {/* image can go here */}
-                                    <div className="flex items-center">
-                                        <Image props={{
-                                            src: '/images/pnsticker-small.png',
-                                            alt: 'Puck Norris Sticker',
-                                            divClass: "h-[50px] w-[50px]",
-                                            imgClass: "h-[50px] w-[50px] pr-2"
-                                        }} />
-                                        <h1 className='hidden md:block font-bold text-5xl font-gains'>Puck Norris</h1>
-                                    </div>
-                                </div>
-                            </NextLink>
-                        </div>
-                    </div>
-                    <button onClick={handleClick} className={`text-txt-400 focus:outline-none fixed right-2 z-50`}>
-                        {/* <span className="sr-only">Open main menu</span>
-                        <div
-                            className="block w-5 absolute left-1/2 top-1/2   transform  -translate-x-1/2 -translate-y-1/2">
-                            <span aria-hidden="true" className={`${isOpen ? 'rotate-45' : '-translate-y-1.5'} block absolute h-0.5 w-5 bg-current transform transition duration-500 ease-in-out`}></span>
-                            <span aria-hidden="true"
-                                className={`${isOpen ? 'opacity-0' : ''}  block absolute  h-0.5 w-5 bg-current   transform transition duration-500 ease-in-out`}></span>
-                            <span aria-hidden="true"
-                                className={`${isOpen ? "-rotate-45" : "translate-y-1.5"}  block absolute  h-0.5 w-5 bg-current transform  transition duration-500 ease-in-out`}></span>
-                        </div> */}
-                        <div className="bg-bg-500 rounded-md md:hover:opacity-50 py-2 transition-all w-[110px] grid place-items-center">
-                            <p>{isOpen ? "Close" : "Change Bot"}</p>
-                        </div>
-                    </button>
-                    <div
-                        className={`top-0 right-0 w-[75vw] max-w-[400px] py-[75px] pb-4 space-y-2 px-4 bg-bg-700 fixed h-screen z-40 ease-in-out duration-300 border-l border-bg-500 overflow-auto ${isOpen ? "translate-x-0 " : "translate-x-full"}`}>
-                        <h3 className='text-2xl font-bold'>Available</h3>
-                        <div className="space-y-2">
-                            {modelButtons()}
-                        </div>
-                    </div>
+    return (
+        <div className="h-screen flex flex-col overflow-hidden">
+            {/* Site header */}
+            <div className="fixed top-0 left-0 right-0 z-50">
+                <Header />
+            </div>
+
+            {/* Slide-out bot selector panel */}
+            <div
+                className={`top-0 right-0 w-[75vw] max-w-[400px] py-[75px] pb-4 space-y-2 px-4 bg-bg-700 fixed h-screen z-40 ease-in-out duration-300 border-l border-bg-500 overflow-auto ${isOpen ? "translate-x-0" : "translate-x-full"}`}>
+                <h3 className='text-2xl font-bold'>Change Bot</h3>
+                <div className="space-y-2">
+                    {modelButtons()}
                 </div>
             </div>
-        </div>
-        <div className="relative h-screen w-screen flex flex-col overflow-hidden">
-            <div className="bg-bg flex flex-col h-full">
-                <div ref={divRef} className="flex-1 overflow-y-scroll mt-[65px]" style={{ scrollBehavior: 'smooth' }}>
+
+            {/* Main content area below header */}
+            <div className="flex flex-col flex-1 overflow-hidden mt-[60px]">
+                <div ref={divRef} className="flex-1 overflow-y-scroll" style={{ scrollBehavior: 'smooth' }}>
                     {body()}
                 </div>
-                <div className="w-screen flex items-center justify-center border-t border-t-bg-600">
-                    <div className="max-w-[1200px] px-4 lg:px-20 md:px-10 w-screen">
-                        <div className="px-8 pt-4 flex justify-center items-center">
+
+                {/* Bottom input bar */}
+                <div className="w-full border-t border-t-bg-600">
+                    <div className="max-w-[1200px] mx-auto px-4 lg:px-20 md:px-10">
+                        <div className="pt-3 pb-1 flex items-center gap-2">
+                            <button
+                                onClick={handleClick}
+                                className="bg-bg-500 rounded-md md:hover:opacity-50 py-[11px] px-3 transition-all text-sm whitespace-nowrap flex-shrink-0"
+                            >
+                                {isOpen ? "Close" : "Change Bot"}
+                            </button>
                             <div className="flex space-x-2 items-center flex-grow h-[50px]">
                                 <Field
                                     props={{
@@ -332,22 +305,22 @@ export default function ChuckChat({m}: {m: string}) {
                                 />
                                 <button
                                     onClick={() => sendMessage()}
-                                    className="text-white bg-main rounded-md p-[11px] h-min m-1 md:hover:opacity-70 transition-opacity"
+                                    className="text-white bg-main rounded-md p-[11px] h-min md:hover:opacity-70 transition-opacity"
                                 >
                                     <AiOutlineSend size={20} />
                                 </button>
                             </div>
                         </div>
-                        <div className="grid place-items-center my-4">
+                        <div className="grid place-items-center my-3">
                             <div className="space-x-2 flex items-center">
                                 <NextImage src={"/images/sapphire.png"} alt={"Sapphire NW"} height={20} width={20} />
-                                <p className="text-txt-300">Powered by <a className="underline hover:no-underline" href="https://sapphirenw.com" target="_blank" rel="noopener noreferrer">Sapphire NW</a></p>
+                                <p className="text-txt-300 text-sm">Powered by <a className="underline hover:no-underline" href="https://sapphirenw.com" target="_blank" rel="noopener noreferrer">Sapphire NW</a></p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    )
 
 }
