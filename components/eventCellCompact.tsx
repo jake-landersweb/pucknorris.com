@@ -20,6 +20,11 @@ const EventCellCompact = ({ event }: { event: Event }) => {
     }
 
     const score = () => {
+        const isHome = eventIsHome(event)
+        const pnScore = isHome ? (event.homeTeam.score ?? 0) : (event.awayTeam.score ?? 0)
+        const oppScore = isHome ? (event.awayTeam.score ?? 0) : (event.homeTeam.score ?? 0)
+        const result = pnScore > oppScore ? "WIN" : pnScore < oppScore ? "LOSS" : ""
+        const resultColor = result === "WIN" ? "text-green-300" : result === "LOSS" ? "text-red-500" : ""
         return <div className="flex items-center pt-4 text-2xl">
             <div className="pr-4"><MdOutlineSportsScore className="text-main min-w-[30px] min-h-[30px]" /></div>
             <div className="pr-4">
@@ -27,7 +32,7 @@ const EventCellCompact = ({ event }: { event: Event }) => {
                 <span className='text-txt-300'> - </span>
                 <span className={`${event.homeTeam.teamId != process.env.NEXT_PUBLIC_TEAMID ? "font-bold" : "text-txt-300"}`}>{event.awayTeam.score ?? 0}</span>
             </div>
-            <p className={` text-2xl tracking-wide ${(event.homeTeam.score ?? 0) > (event.awayTeam.score ?? 0) ? !eventIsPrevious(event) ? "text-green-300" : "text-red-500" : !eventIsPrevious(event) ? "text-red-500" : "text-green-300"}`}>{(event.homeTeam.score ?? 0) > (event.awayTeam.score ?? 0) ? !eventIsPrevious(event) ? "WIN" : "LOSS" : (event.homeTeam.score ?? 0) == (event.awayTeam.score ?? 0) ? "" : !eventIsPrevious(event) ? "LOSS" : "WIN"}</p>
+            <p className={`text-2xl tracking-wide ${resultColor}`}>{result}</p>
         </div>
     }
 

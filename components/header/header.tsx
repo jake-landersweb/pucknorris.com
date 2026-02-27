@@ -5,11 +5,22 @@ import { useState, useEffect } from "react";
 import HeaderItem from './headerItem';
 import Image from '../image';
 import Link from '../link';
+import { FaInstagram } from 'react-icons/fa';
+
+function getCookie(name: string): string | null {
+    if (typeof document === 'undefined') return null;
+    const match = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
+    return match ? decodeURIComponent(match[1]) : null;
+}
 
 const Header = () => {
     const [scrollY, setScrollY] = useState(0);
     const [isOpen, setIsOpen] = useState(false);
+    const [userName, setUserName] = useState<string | null>(null);
 
+    useEffect(() => {
+        setUserName(getCookie('user_name') || null);
+    }, []);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -41,12 +52,23 @@ const Header = () => {
 
     const menu = (className: string) => {
         return <div className={className}>
-            {headerItem("@pucknorrishockeyclub", "https://www.instagram.com/pucknorrishockeyclub")}
+            <a
+                href="https://www.instagram.com/pucknorrishockeyclub"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`${scrollY > 50 ? "hover:bg-bg-500" : "hover:bg-bg-700"} hover:bg-bg-500 transition-all px-4 py-2 rounded-md text-txt flex items-center gap-1.5`}
+            >
+                <FaInstagram size={16} />
+                <span>pucknorrishockeyclub</span>
+            </a>
             {headerItem("ChuckBot", "/chat")}
             {headerItem("Schedule", "/schedule")}
             {headerItem("Merch", "/merch")}
             {headerItem("Gallery", "/gallery")}
-            {headerItem("Login", "https://teams.crosschecksports.com", true)}
+            {userName
+                ? <><span className={`px-4 py-2 text-gray-400 text-sm`}>Hi {userName}</span>{headerItem("Dashboard", "/admin")}</>
+                : headerItem("Login", "/login")
+            }
         </div>
     }
 
@@ -56,7 +78,7 @@ const Header = () => {
             <div className="flex items-center justify-between max-w-[2000px] w-full px-2 lg:px-10">
                 <div className="flex space-x-4">
                     <div className="">
-                        <NextLink href="/" onClick={(e) => closeMenu()}>
+                        <NextLink href="/" onClick={() => closeMenu()}>
                             <div className="group flex items-center transition-all">
                                 {/* image can go here */}
                                 <div className="flex items-center">
@@ -106,7 +128,7 @@ const Header = () => {
                     <div>
                         <HeaderItem props={{
                             route: 'https://www.instagram.com/pucknorrishockeyclub',
-                            title: '@pucknorrishockeyclub',
+                            title: 'pucknorrishockeyclub',
                             onTap: () => closeMenu(),
                             isCollapsed: false,
                             className: "dark:bg-bg-500 py-2 px-4 cursor-pointer rounded-md w-full",
@@ -154,14 +176,17 @@ const Header = () => {
                             isExternal: false,
                         }} />
                     </div>
+                    {userName && (
+                        <div className="px-4 py-2 text-gray-400 text-sm">Hi {userName}</div>
+                    )}
                     <div>
                         <HeaderItem props={{
-                            route: 'https://teams.crosschecksports.com',
-                            title: 'Login',
+                            route: userName ? '/admin' : '/login',
+                            title: userName ? 'Dashboard' : 'Login',
                             onTap: () => closeMenu(),
                             isCollapsed: false,
                             className: "dark:bg-bg-500 py-2 px-4 cursor-pointer rounded-md w-full",
-                            isExternal: true,
+                            isExternal: false,
                         }} />
                     </div>
                 </div>
