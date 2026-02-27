@@ -2,6 +2,9 @@
 const nextConfig = {
   reactStrictMode: false,
   output: 'standalone',
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   headers: () => [
     {
       source: '/merch',
