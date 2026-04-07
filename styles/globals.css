@@ -5,4 +5,5 @@
 @font-face {
   font-family: "Gainsborough";
   src: url("../public/fonts/GainsboroughSans-Regular.otf");
+  font-display: swap;
 }

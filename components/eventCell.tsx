@@ -23,8 +23,8 @@ const EventCell = ({ event, compact = false }: { event: Event, compact?: boolean
     }
 
     const detailCell = (label: string, val: string) => {
-        return <div key={label} className="pt-2 space-y-1">
-            <p className="text-txt-300 text-xs font-bold">{label.toUpperCase()}</p>
+        return <div key={label} className="pt-1 flex items-center gap-2">
+            <p className="text-txt-300 text-xs font-bold shrink-0">{label.toUpperCase()}</p>
             <p className="text-gray-500 text-sm break-words">{val}</p>
         </div>
     }
@@ -79,7 +79,7 @@ const EventCell = ({ event, compact = false }: { event: Event, compact?: boolean
                 <span className="text-gray-500">vs</span>
                 <span className={!eventIsHome(event) ? "font-bold" : "text-gray-400"}>{event.awayTeam.title}</span>
             </div>
-            {event.eDescription && event.eDescription !== "" && (
+            {event.eDescription && event.eDescription !== "" && event.eDescription.trim() !== "Tag(s): Puck Norris" && (
                 <p className="text-xs text-gray-500 mt-1 text-center">{event.eDescription.length > 100 ? event.eDescription.substring(0, 100) + "..." : event.eDescription}</p>
             )}
         </div>
@@ -92,16 +92,16 @@ const EventCell = ({ event, compact = false }: { event: Event, compact?: boolean
                     <p className="text-2xl md:text-3xl font-bold">{eventDayNumber(event)}</p>
                     <p className="text-main text-sm">{eventMonthName(event).substring(0, 3)}</p>
                 </div>
-                <div className="mx-auto grid place-items-center">
+                <div className="mx-auto flex items-center gap-2">
                     <p className='text-xl md:text-2xl font-light'>{eventDayOfWeek(event).toUpperCase()}</p>
-                    <p className='text-sm font-bold text-txt-300 text-center'>@ {eventTime(event)}</p>
+                    <p className='text-xl md:text-2xl font-light text-txt-300'>@ {eventTime(event)}</p>
                 </div>
             </div>
-            <div className="py-4">
+            <div className="py-2">
                 {largeTitle()}
                 {eventIsPrevious(event) ? <div className="grid place-items-center">{score()}</div> : null}
             </div>
-            {event.eDescription == "" ? null : <>{detailCell("Description", event.eDescription.length > 200 ? event.eDescription.substring(0, 200) + "..." : event.eDescription)}</>}
+            {event.eDescription === "" || event.eDescription.trim() === "Tag(s): Puck Norris" ? null : <>{detailCell("Description", event.eDescription.length > 200 ? event.eDescription.substring(0, 200) + "..." : event.eDescription)}</>}
             {eventLocation(event) == "" ? null : <>{detailCell("Location", eventLocation(event))}</>}
             {customFields()}
         </div>

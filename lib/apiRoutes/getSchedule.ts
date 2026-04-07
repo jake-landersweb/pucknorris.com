@@ -8,7 +8,7 @@ export default async function getSchedule() {
         method: "PUT",
         headers: [["Content-Type", "application/json"]],
         body: JSON.stringify(date),
-        next: { revalidate: 300 } // cache response for 5 minutes
+        next: { revalidate: 3600 } // cache response for 1 hour
     })
     const posts = await res.json();
     return posts;

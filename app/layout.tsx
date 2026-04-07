@@ -4,7 +4,6 @@ import Header from "../components/header/header";
 import "../styles/globals.css";
 import { Providers } from "./providers";
 
-export const dynamic = 'force-dynamic'
 
 const Root = ({ children }: { children: React.ReactNode }) => {
     return (

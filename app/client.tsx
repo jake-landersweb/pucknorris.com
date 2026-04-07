@@ -73,7 +73,7 @@ const IndexClient = () => {
         if (nextGames.length > 0) {
             items.push(
                 <div key="next-games-row" className="space-y-2">
-                    <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Next Game</p>
+                    <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Next Games</p>
                     <div className={`grid grid-cols-1 gap-4 ${nextGames.length >= 2 ? "lg:grid-cols-2" : "lg:grid-cols-1"}`}>
                         {nextGames}
                     </div>
@@ -84,7 +84,7 @@ const IndexClient = () => {
         if (previousGames.length > 0) {
             items.push(
                 <div key="previous-games-row" className="space-y-2">
-                    <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Previous Game</p>
+                    <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Previous Games</p>
                     <div className={`grid grid-cols-1 gap-4 ${previousGames.length >= 2 ? "lg:grid-cols-2" : "lg:grid-cols-1"}`}>
                         {previousGames}
                     </div>
@@ -146,11 +146,11 @@ const IndexClient = () => {
                     <Image props={{
                         src: "/images/pucknorris.png",
                         alt: "Puck Norris Logo",
-                        divClass: "",
-                        imgClass: "h-[150px] sm:h-[200px] md:h-[300px]"
+                        divClass: "hidden lg:block",
+                        imgClass: "h-[200px] md:h-[300px]"
                     }} />
                     {/* Featured Merch Slideshow */}
-                    <div className="mt-8">
+                    <div className="mt-0 lg:mt-8">
                         <h3 className="text-base font-bold text-main text-center mb-1">Featured Merch</h3>
                         {merchSlideshow()}
                         <Link props={{
@@ -161,13 +161,12 @@ const IndexClient = () => {
                         }} />
                     </div>
                 </div>
-                <div className="space-y-4 flex flex-col items-stretch">
+                <div className="space-y-4 flex flex-col items-stretch w-full lg:w-auto order-first lg:order-none">
                     {/* Content section */}
                     <div className="space-y-2 text-center border border-white/15 rounded-lg p-4">
                         <h2 className="text-2xl lg:text-4xl font-medium font-gains tracking-wide">Puck Norris Hockey Club</h2>
                         <h4 className="text-main text-xl lg:text-2xl font-gains">Blood, Sweat, &#38; Beers!</h4>
-                        <p className="text-gray-500 text-sm lg:text-base">Dusters puck off! We're ripping bardownskis, guzzlin' the coldest brews and ruling the PNW like a beauty. Tag along if you've got the stones, buddy!  -- ChuckBot</p>
-                        {/* <p className="text-gray-500 text-sm lg:text-base">The most badass men's league hockey team in the PNW! We play hockey, have fun, and most importantly, drink good beer.</p> */}
+                        <p className="hidden lg:block text-gray-500 text-sm lg:text-base">Dusters puck off! We're ripping bardownskis, guzzlin' the coldest brews and ruling the PNW like a beauty. Tag along if you've got the stones, buddy!  -- ChuckBot</p>
 
                         <Link props={{
                             href: "/chat",
