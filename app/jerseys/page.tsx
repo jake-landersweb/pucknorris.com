@@ -10,10 +10,10 @@ export default async function JerseysPage() {
     queryKey: ['jerseys', TEAM_ID],
     queryFn: async () => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL ?? ''}/api/jerseys?teamId=${TEAM_ID}`,
+        `${process.env.NEXT_PUBLIC_BASE_URL ?? ''}/api/jerseys?teamId=${TEAM_ID}&page=1`,
         { cache: 'no-store' }
       );
-      if (!res.ok) return [];
+      if (!res.ok) return { data: [], total: 0, page: 1, pageSize: 10 };
       return res.json();
     },
   });

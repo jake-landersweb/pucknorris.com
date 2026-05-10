@@ -1,10 +1,30 @@
 import type { Jersey, NewJersey, UpdateJersey } from '../data/jersey';
 
-// Client-side fetch functions called by React Query
-// These hit the Next.js API routes which talk to Postgres
+export interface JerseyPage {
+  data: Jersey[];
+  total: number;
+  page: number;
+  pageSize: number;
+}
 
-export async function getTeamJerseys(teamId: string): Promise<Jersey[]> {
-  const res = await fetch(`/api/jerseys?teamId=${encodeURIComponent(teamId)}`);
+export interface JerseyFilters {
+  color?: string;
+  active?: boolean;
+  loaner?: boolean;
+  owesPayment?: boolean;
+  number?: string;
+  page?: number;
+}
+
+export async function getTeamJerseys(teamId: string, filters: JerseyFilters = {}): Promise<JerseyPage> {
+  const params = new URLSearchParams({ teamId });
+  if (filters.color) params.set('color', filters.color);
+  if (filters.active !== undefined) params.set('active', String(filters.active));
+  if (filters.loaner !== undefined) params.set('loaner', String(filters.loaner));
+  if (filters.owesPayment !== undefined) params.set('owesPayment', String(filters.owesPayment));
+  if (filters.number) params.set('number', filters.number);
+  if (filters.page) params.set('page', String(filters.page));
+  const res = await fetch(`/api/jerseys?${params}`);
   if (!res.ok) throw new Error('Failed to fetch jerseys');
   return res.json();
 }
