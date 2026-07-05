@@ -25,7 +25,10 @@ export async function getTeamJerseys(teamId: string, filters: JerseyFilters = {}
   if (filters.number) params.set('number', filters.number);
   if (filters.page) params.set('page', String(filters.page));
   const res = await fetch(`/api/jerseys?${params}`);
-  if (!res.ok) throw new Error('Failed to fetch jerseys');
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.error ?? `Server error ${res.status}`);
+  }
   return res.json();
 }
 

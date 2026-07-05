@@ -45,7 +45,7 @@ export default function LoginClient() {
         {/* Logo */}
         <div className="flex justify-center">
           <Image props={{
-            src: '/images/pucknorris.png',
+            src: '/images/pucknorris-logo.webp',
             alt: 'Puck Norris Logo',
             divClass: '',
             imgClass: 'h-[140px]',

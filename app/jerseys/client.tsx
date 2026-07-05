@@ -388,7 +388,9 @@ export default function JerseysClient({ teamId }: { teamId: string }) {
           {isLoading ? (
             <p className="text-gray-500">Loading jerseys…</p>
           ) : error ? (
-            <p className="text-red-400">Failed to load jerseys.</p>
+            <p className="text-red-400 bg-red-900/20 border border-red-800/40 rounded px-4 py-3 text-sm font-mono">
+              {(error as Error).message}
+            </p>
           ) : jerseys.length === 0 ? (
             <p className="text-gray-500 text-center py-12">No jerseys found.</p>
           ) : (

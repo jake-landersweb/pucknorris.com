@@ -144,7 +144,7 @@ const IndexClient = () => {
             <div className="flex flex-col lg:flex-row items-center lg:items-start justify-center gap-4 lg:gap-8 pb-6 lg:pb-8 w-full px-4 lg:px-0">
                 <div className="flex-shrink-0 flex flex-col items-center">
                     <Image props={{
-                        src: "/images/pucknorris.png",
+                        src: "/images/pucknorris-logo.webp",
                         alt: "Puck Norris Logo",
                         divClass: "hidden lg:block",
                         imgClass: "h-[200px] md:h-[300px]"

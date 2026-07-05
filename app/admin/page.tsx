@@ -74,7 +74,7 @@ export default async function AdminPage() {
         {/* Header */}
         <div className="flex flex-col items-center space-y-4">
           <Image props={{
-            src: '/images/pucknorris.png',
+            src: '/images/pucknorris-logo.webp',
             alt: 'Puck Norris Logo',
             divClass: '',
             imgClass: 'h-[120px]',

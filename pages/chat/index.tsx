@@ -137,8 +137,8 @@ export default function ChuckChat({m}: {m: string}) {
 
     const imageName = () => {
         switch (model) {
-            case "gpt-4": return "/images/pucknorris.png";
-            case "gpt-3.5": return "/images/pucknorris.png";
+            case "gpt-4": return "/images/pucknorris-logo.webp";
+            case "gpt-3.5": return "/images/pucknorris-logo.webp";
             case "claude-2": return "/images/claude2.png";
             case "claude-instant": return "/images/claude2.png";
             default: return "Unknown";

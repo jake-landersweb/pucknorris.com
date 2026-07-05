@@ -56,8 +56,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       return res.status(200).json({ data: rows, total, page: pageNum, pageSize: PAGE_SIZE });
     } catch (err) {
+      const msg = (err as Error).message ?? 'Unknown error';
       console.error('[jerseys GET]', err);
-      return res.status(500).json({ error: 'Database error' });
+      return res.status(500).json({ error: `Database error: ${msg}` });
     }
   }
 
