@@ -19,6 +19,10 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+# Public client configuration is deliberately supplied at build time.
+ARG NEXT_PUBLIC_TEAMID
+ENV NEXT_PUBLIC_TEAMID=$NEXT_PUBLIC_TEAMID
+
 # Build the application with cache mounts
 RUN --mount=type=cache,target=/root/.npm \
     --mount=type=cache,target=/app/.next/cache \

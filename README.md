@@ -32,3 +32,33 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+## Production deployment
+
+Pushes to `main` run `.github/workflows/deploy.yml`: lint, typecheck, audit,
+then a clean linux/amd64 Docker build pushed to GHCR with the full commit SHA
+and `main` tags. Dokploy pulls the SHA tag on us-spokane-2 using Compose app
+`pucknorris-spokane2` (`MqxkGDq0oojImGtwmOI7r`). The old hetzner image and
+container must never be reused after the 2026-11-13 compromise.
+
+GitHub secrets: `DOKPLOY_URL`, `DOKPLOY_KEY` (dedicated key named
+`github-actions-pucknorris-deploy`). GitHub variable `NEXT_PUBLIC_TEAMID`
+supplies the public client build configuration. Runtime secrets stay in
+Dokploy; `scripts/deploy-dokploy.py` preserves them when changing `IMAGE_TAG`.
+`deploy/compose.yaml` is the source for the new app's container configuration.
+The container runs as UID/GID 1001, with a read-only root, tmpfs cache, 512 MiB
+memory limit, 256 PID limit, and a 256 MiB V8 heap cap.
+
+Health: `/api/health`. Deployment waits for Dokploy completion and probes the
+new origin directly. Before DNS cutover, that probe permits the temporary
+Traefik certificate; verify public TLS without that exception after cutover.
+
+Rollback: deploy a previously verified **patched** SHA through the same script
+with `IMAGE_TAG=<sha>`, `DOKPLOY_URL`, and `DOKPLOY_KEY` in the environment.
+Never roll back to the compromised `latest` image or restart its old service.
+MySQL remains external AWS RDS; this deployment does not migrate data.
+
+Security baseline (2026-11-13): Next 15.5.29 / React 19.1.10, following
+https://nextjs.org/blog/november-2026-security-release and the repository's
+published GitHub advisories. PostCSS is pinned/overridden to 8.5.32 to fix
+high-severity transitive findings without moving to Next 16.

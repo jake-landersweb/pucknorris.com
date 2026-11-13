@@ -1,0 +1,69 @@
+name: Deploy
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: pucknorris-production
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      digest: ${{ steps.build.outputs.digest }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npx tsc --noEmit
+      - run: npm audit --audit-level=high
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/build-push-action@v6
+        id: build
+        with:
+          context: .
+          platforms: linux/amd64
+          build-args: |
+            NEXT_PUBLIC_TEAMID=${{ vars.NEXT_PUBLIC_TEAMID }}
+          push: true
+          tags: |
+            ghcr.io/jake-landersweb/pucknorris.com:${{ github.sha }}
+            ghcr.io/jake-landersweb/pucknorris.com:main
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy immutable image and wait
+        env:
+          DOKPLOY_URL: ${{ secrets.DOKPLOY_URL }}
+          DOKPLOY_KEY: ${{ secrets.DOKPLOY_KEY }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: python3 scripts/deploy-dokploy.py
+      - name: Wait for application health at the target
+        # HTTP-01 certificate issuance waits for DNS cutover. -k is limited
+        # to this origin probe; it must not turn a public DNS probe green.
+        run: |
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent --insecure --resolve pucknorris.com:443:104.204.70.48 https://pucknorris.com/api/health; then
+              exit 0
+            fi
+            sleep 10
+          done
+          exit 1
