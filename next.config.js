@@ -2,6 +2,8 @@
 const nextConfig = {
   reactStrictMode: false,
   output: 'standalone',
+  // Keep ISR/data entries on disk instead of duplicating up to 50 MB in RAM.
+  cacheMaxMemorySize: 0,
   eslint: {
     ignoreDuringBuilds: true,
   },
