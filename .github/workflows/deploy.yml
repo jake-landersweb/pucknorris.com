@@ -41,10 +41,17 @@ jobs:
             NEXT_PUBLIC_TEAMID=${{ vars.NEXT_PUBLIC_TEAMID }}
           push: true
           tags: |
-            ghcr.io/jake-landersweb/pucknorris.com:${{ github.sha }}
-            ghcr.io/jake-landersweb/pucknorris.com:main
+            ghcr.io/jake-landersweb/pucknorris:${{ github.sha }}
+            ghcr.io/jake-landersweb/pucknorris:main
           cache-from: type=gha
           cache-to: type=gha,mode=max
+      - name: Check published image layers for secret files
+        env:
+          IMAGE: ghcr.io/jake-landersweb/pucknorris@${{ steps.build.outputs.digest }}
+        run: |
+          docker pull "$IMAGE"
+          docker save "$IMAGE" -o "$RUNNER_TEMP/image.tar"
+          python3 scripts/check-image-layers.py "$RUNNER_TEMP/image.tar"
   deploy:
     needs: build
     runs-on: ubuntu-latest

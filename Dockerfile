@@ -30,6 +30,7 @@ RUN --mount=type=cache,target=/root/.npm \
 
 # Runtime stage (uses target platform)
 FROM node:22-alpine AS runner
+LABEL org.opencontainers.image.source="https://github.com/jake-landersweb/pucknorris.com"
 WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1

@@ -1,6 +1,6 @@
 services:
   web:
-    image: ghcr.io/jake-landersweb/pucknorris.com:${IMAGE_TAG:?IMAGE_TAG required}
+    image: ghcr.io/jake-landersweb/pucknorris:${IMAGE_TAG:?IMAGE_TAG required}
     restart: unless-stopped
     user: "1001:1001"
     read_only: true
