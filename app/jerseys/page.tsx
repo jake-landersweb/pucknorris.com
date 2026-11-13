@@ -1,11 +1,12 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
-import { queryClient } from '../../components/query-client';
+import { makeQueryClient } from '../../components/query-client';
 import JerseysClient from './client';
 
 // Hardcoded for testing — replace when team context is wired up
 const TEAM_ID = 'Tdc0a36cdb7a747348209ca162b09ee0a';
 
 export default async function JerseysPage() {
+  const queryClient = makeQueryClient();
   await queryClient.prefetchQuery({
     queryKey: ['jerseys', TEAM_ID],
     queryFn: async () => {

@@ -1,10 +1,11 @@
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query"
-import { queryClient } from "../../components/query-client"
+import { makeQueryClient } from "../../components/query-client"
 import shopifyClient from "../../lib/apiRoutes/shopifyClient"
 import { serializeData } from "../../utils/serialize"
 import MerchClient from "./client"
 
 export default async function Merch() {
+  const queryClient = makeQueryClient();
     await queryClient.prefetchQuery({
         queryKey: ["shopify-products-all"],
         queryFn: async () => {

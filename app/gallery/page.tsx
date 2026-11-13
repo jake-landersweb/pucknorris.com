@@ -1,10 +1,11 @@
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query"
-import { queryClient } from "../../components/query-client"
+import { makeQueryClient } from "../../components/query-client"
 import getGallery from "../../lib/apiRoutes/getGallery"
 import { serializeData } from "../../utils/serialize"
 import GalleryClient from "./client"
 
 export default async function Gallery() {
+  const queryClient = makeQueryClient();
     await queryClient.prefetchQuery({
         queryKey: ["gallery"],
         queryFn: async () => {

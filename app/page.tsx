@@ -1,11 +1,12 @@
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query"
-import { queryClient } from "../components/query-client"
+import { makeQueryClient } from "../components/query-client"
 import getSchedule from "../lib/apiRoutes/getSchedule"
 import shopifyClient from "../lib/apiRoutes/shopifyClient"
 import { serializeData } from "../utils/serialize"
 import IndexClient from "./client"
 
 export default async function Index() {
+  const queryClient = makeQueryClient();
     await Promise.all([
         queryClient.prefetchQuery({
             queryKey: ["current-schedule"],
