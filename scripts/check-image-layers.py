@@ -14,8 +14,14 @@ with tarfile.open(sys.argv[1]) as image:
                     path = pathlib.PurePosixPath(member.name)
                     name = path.name
                     # Alpine's public CA bundle is expected and contains no keys.
-                    if str(path).lstrip("./") in {"etc/ssl/cert.pem", "usr/lib/ssl/cert.pem"}:
+                    if str(path).lstrip("./") in {"etc/ssl/cert.pem", "etc/ssl1.1/cert.pem", "usr/lib/ssl/cert.pem"}:
                         continue
+                    if str(path).lstrip("./") == "usr/local/lib/node_modules/npm/.npmrc":
+                        config = layer.extractfile(member).read().decode()
+                        # Official Node image ships npm's prefix configuration.
+                        if all(not line.strip() or line.lstrip().startswith(("#", ";", "prefix=", "globalconfig="))
+                               for line in config.splitlines()):
+                            continue
                     if (name == ".env" or name.startswith(".env.")
                             or name in {".npmrc", "id_rsa", "id_ed25519", "credentials"}
                             or name.endswith((".key", ".pem", ".p12", ".pfx"))):
