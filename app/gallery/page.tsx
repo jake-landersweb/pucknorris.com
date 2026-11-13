@@ -1,3 +1,6 @@
+// Gallery queries require the runtime team configuration.
+export const dynamic = "force-dynamic";
+
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query"
 import { makeQueryClient } from "../../components/query-client"
 import getGallery from "../../lib/apiRoutes/getGallery"
