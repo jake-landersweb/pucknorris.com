@@ -50,8 +50,8 @@ The container runs as UID/GID 1001, with a read-only root, tmpfs cache, 512 MiB
 memory limit, 256 PID limit, and a 256 MiB V8 heap cap.
 
 Health: `/api/health`. Deployment waits for Dokploy completion and probes the
-new origin directly. Before DNS cutover, that probe permits the temporary
-Traefik certificate; verify public TLS without that exception after cutover.
+new origin directly. The probe requires a valid TLS certificate; DNS must point to the target
+before the first deployment so HTTP-01 validation can complete.
 
 Rollback: deploy a previously verified **patched** SHA through the same script
 with `IMAGE_TAG=<sha>`, `DOKPLOY_URL`, and `DOKPLOY_KEY` in the environment.

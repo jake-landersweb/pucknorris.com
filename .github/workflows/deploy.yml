@@ -57,11 +57,9 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         run: python3 scripts/deploy-dokploy.py
       - name: Wait for application health at the target
-        # HTTP-01 certificate issuance waits for DNS cutover. -k is limited
-        # to this origin probe; it must not turn a public DNS probe green.
         run: |
           for attempt in $(seq 1 30); do
-            if curl --fail --silent --insecure --resolve pucknorris.com:443:104.204.70.48 https://pucknorris.com/api/health; then
+            if curl --fail --silent --resolve pucknorris.com:443:104.204.70.48 https://pucknorris.com/api/health; then
               exit 0
             fi
             sleep 10
