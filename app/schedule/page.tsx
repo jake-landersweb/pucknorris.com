@@ -1,3 +1,6 @@
+// Fetch runtime configuration/data on the server, never prerender CI placeholders.
+export const dynamic = "force-dynamic";
+
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query"
 import { makeQueryClient } from "../../components/query-client"
 import getScheduleFull from "../../lib/apiRoutes/getScheduleFull"
