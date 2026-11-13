@@ -1,6 +1,7 @@
 """Deploy an immutable CI image through Dokploy; never log response env or secrets."""
 import json
 import os
+import re
 import time
 import urllib.request
 
@@ -17,13 +18,29 @@ def api(route, data=None):
         return json.load(response)
 
 
+# Fail before changing Compose or env if operator-owned routing is missing/drifted.
+domains = api("domain.byComposeId?composeId=" + COMPOSE_ID)
+for host in ("pucknorris.com", "www.pucknorris.com"):
+    matches = [d for d in domains if d.get("host") == host and d.get("path") == "/"]
+    expected = ["pucknorris-www@docker"] if host.startswith("www.") else []
+    if len(matches) != 1 or not all((
+        matches[0].get("enabled") is True,
+        matches[0].get("serviceName") == "web", matches[0].get("port") == 3000,
+        matches[0].get("https") is True, matches[0].get("certificateType") == "letsencrypt",
+        matches[0].get("middlewares") == expected,
+        matches[0].get("stripPath") is False, matches[0].get("internalPath") in ("/", None),
+    )):
+        raise SystemExit("Expected Dokploy Domain missing or drifted: " + host)
 current = api("compose.one?composeId=" + COMPOSE_ID)
-lines = [line for line in (current.get("env") or "").splitlines()
-         if not line.startswith("IMAGE_TAG=")]
-lines.append("IMAGE_TAG=" + os.environ["IMAGE_TAG"])
+env = current.get("env") or ""
+pattern = r"(?m)^[ \t]*(?:export[ \t]+)?IMAGE_TAG[ \t]*=.*$"
+if re.search(pattern, env):
+    env = re.sub(pattern, lambda _: "IMAGE_TAG=" + os.environ["IMAGE_TAG"], env)
+else:
+    env += ("" if not env or env.endswith("\n") else "\n") + "IMAGE_TAG=" + os.environ["IMAGE_TAG"] + "\n"
 with open("deploy/compose.yaml") as source:
     compose = source.read()
-api("compose.update", {"composeId": COMPOSE_ID, "env": "\n".join(lines) + "\n", "composeFile": compose})
+api("compose.update", {"composeId": COMPOSE_ID, "env": env, "composeFile": compose})
 previous = {d["deploymentId"] for d in api("deployment.allByCompose?composeId=" + COMPOSE_ID)}
 api("compose.deploy", {"composeId": COMPOSE_ID, "title": "GitHub Actions " + os.environ["IMAGE_TAG"]})
 for _ in range(90):

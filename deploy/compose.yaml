@@ -33,16 +33,11 @@ services:
       start_period: 20s
       retries: 3
     networks: [dokploy-network]
+    # Domain objects own routers/TLS; www Domain references this middleware.
     labels:
-      - traefik.enable=true
-      - traefik.docker.network=dokploy-network
-      - traefik.http.routers.pucknorris-spokane2-http.rule=Host(`pucknorris.com`) || Host(`www.pucknorris.com`)
-      - traefik.http.routers.pucknorris-spokane2-http.entrypoints=web
-      - traefik.http.routers.pucknorris-spokane2-http.middlewares=redirect-to-https@file
-      - traefik.http.routers.pucknorris-spokane2.rule=Host(`pucknorris.com`) || Host(`www.pucknorris.com`)
-      - traefik.http.routers.pucknorris-spokane2.entrypoints=websecure
-      - traefik.http.routers.pucknorris-spokane2.tls.certresolver=letsencrypt
-      - traefik.http.services.pucknorris-spokane2.loadbalancer.server.port=3000
+      - 'traefik.http.middlewares.pucknorris-www.redirectregex.regex=^https?://www\.pucknorris\.com/(.*)'
+      - 'traefik.http.middlewares.pucknorris-www.redirectregex.replacement=https://pucknorris.com/$${1}'
+      - 'traefik.http.middlewares.pucknorris-www.redirectregex.permanent=true'
 networks:
   dokploy-network:
     external: true
